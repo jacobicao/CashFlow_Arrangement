@@ -1,2 +1,2 @@
 # py_project
-I plan I would learn DIG DATA TECH in python soon, then open this repository.
+Learning DIG DATA TECH in python recently, then this repository is opened.
