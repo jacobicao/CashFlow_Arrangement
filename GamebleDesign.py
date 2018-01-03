@@ -1,92 +1,128 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*
+
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
 import math
+
 # 模拟时间区间长度
 t = 100
 # 用户数
-n = 50000
+n1 = 50000
+n2 = 100000
 # 最高赔率
 mr = 8.0
-# 货币基金日收益率
-r = 0.0365 / 365
-# 竞猜中奖率
-# ps = 0.90
+# 首日补贴年化收益率
+fr = 0.04
+# 人头补贴
+ah = 1.0
 # 模拟次数
-pn = 30
+pn = 9
 # 复投比例
-ir = 1.0
-# 加速券票面利率
-ar = 0.0365 / 365
+ir = 0.5
+# 加速券票面年化利率
+ar = 0.0365
 
 
 # 一次完整的模拟
-def inner_loop(m_t, m_p, m_n, fund, m_r, m_ar):
+def inner_loop(m_t, m_p, m_d, m_n1, m_n2, fund, m_r, m_ar):
+    """
+    :param m_t: 时间长度
+    :param m_p: 中奖概率
+    :param m_d: 复投比例
+    :param m_n1: 初始人数
+    :param m_n2: 最终人数
+    :param fund: 初始资金
+    :param m_r: 初次竞猜补贴比例
+    :param m_ar: 加速券利息率
+    :return: 每日补贴额
+    """
+    # 每日用户数
+    user_number = np.linspace(m_n1, m_n2, m_t).astype(int)
     # 用户的优联账户
-    user_account = np.zeros((m_t, m_n))
+    user_account = np.zeros((m_t, m_n2))
     # 奖金池
     money_pool = 0.
-    # 补贴账户
+    # 总补贴
     allowance = 0.
     # 记录容器
     money_pool_radio = np.zeros(m_t)
-    # 延迟收益
-    dis_next = np.zeros(m_n)
+    # 奖金取出
+    record_d = 0.
+    # 加速券总收入
+    record_a = 0.
+
+    # Day1
+    min_a = fund[:user_number[0]]//1000/10  # 买加速券的情况（最小单位0.1元）
+    record_a += np.sum(min_a)
+    allowance = allowance - (money_pool
+                             + user_number[0]*ah  # 新用户人头补贴
+                             + np.sum(fund[:user_number[0]])*m_r/365  # 新用户的本金补贴
+                             + np.sum(min_a)*(m_ar/365*10000-1))  # 加速券补贴
+    s = abs(allowance) + np.sum(min_a)
+    a = fund[:user_number[0]]*m_r/365 + min_a*m_ar/365*10000
 
     for i in range(1, m_t):
         # 中奖情况
-        q = np.random.binomial(1, m_p, m_n)
-        # 本次赌注
-        a = user_account[i - 1] / ir + fund * m_r + dis_next
-        user_account[i - 1] = user_account[i - 1] * (1 - 1.0 / ir)
-        # 本次奖金
-        s = float(np.sum(a)+money_pool)
+        q = np.random.binomial(1, m_p, user_number[i-1])
         s2 = float(np.sum(a * q))
         if s2 == 0:
-            user_account[i] = user_account[i - 1]
-            money_pool += np.sum(a)
+            user_account[i] = 0
+            money_pool += s
             print('No one Bingo this time: %d' % i)
             continue
         mc = min(s / s2, 8.0)
         # 赌注再分配
         k = mc * q * a
-        user_account[i] = user_account[i - 1] + k
-        # 赢得的钱尽量用来购买加速券（本金的万分之一与当前奖金取较小值）
-        min_a = np.row_stack((np.floor(user_account[i]), np.ceil(fund/10000))).min(axis=0)
-        # 累计补贴值
-        allowance -= np.sum((10000*m_ar-1)*min_a)
-        # 次日加速收益（延迟收益）
-        dis_next = 10000*m_ar*min_a
-        # 扣除买加速券的费用
-        user_account[i] -= min_a
         # 剩余赌注归资金池
         money_pool = s - np.sum(k)
+        # 复投情况
+        d = np.random.binomial(1, m_d, user_number[i-1])
+        user_account[i][:user_number[i - 1]] = k*d
+        # 奖金取出
+        fund[:user_number[i-1]] += k*(1-d)
+        record_d += np.sum(k*(1-d))
+        # 当日下注
+        min_a = (np.append(d, np.ones(user_number[i]-user_number[i-1])) *
+                 fund[:user_number[i]])//1000/10  # 买加速券的情况（最小单位0.1元）,而且不复投不能买加速券
+        record_a += np.sum(min_a)
+        a = (user_account[i][:user_number[i]]  # 旧用户复投
+             + np.append(np.zeros(user_number[i - 1]), fund[user_number[i - 1]: user_number[i]])*m_r/365  # 新用户首次加息
+             + min_a*m_ar/365*10000)  # 加速券
+        # 平衡试算
+        # money_pool_radio[i] = \
+        #    (record_a - np.sum(min_a)) + abs(allowance) - money_pool - record_d - (np.sum(user_account[i]))  # 平衡试算
+        # 下次奖金
+        money_pool += (user_number[i] - user_number[i - 1]) * ah
+        s = float(np.sum(a)+money_pool)
+        # 累计补贴值
+        allowance = allowance - (
+                np.sum(fund[user_number[i-1]:user_number[i]])*m_r/365  # 新增本金补贴
+                + np.sum(min_a)*(10000*m_ar/365-1)  # 加速券补贴
+                + (user_number[i]-user_number[i-1])*ah)  # 新增人头补贴
+
         # 记录器
         # money_pool_radio[i] = money_pool / (np.sum(fund) * r * i)
-        # money_pool_radio[i] = money_pool
-        money_pool_radio[i] = allowance
+        money_pool_radio[i] = allowance + money_pool
 
-    return user_account, money_pool_radio, money_pool
+    return money_pool_radio
 
 
 # 多次模拟
-def simulation_loop(ps=0.1):
+def simulation_loop(ps=0.125):
     # 用户基金账户余额,不大于30000
-    fund = np.random.exponential(3000, n)
+    fund = np.random.exponential(3000, n2)
     fund = np.where(fund > 30000, 30000, fund)
     set_radio_ts = np.zeros((t, pn))
     i = 0
 
-    # pp = np.linspace(ps, 0.4, pn)
-    # for p in pp:
-    #     user_account, money_pool_radio, money_pool = inner_loop(t, p, n, fund, r, ar)
-    #     set_radio_ts[:, i] = money_pool_radio
-    #     i = i + 1
-
-    ar_r = np.linspace(ar, 0.05/365, pn)
+    ar_r = np.linspace(ar, 0.04, pn)
     for p_ar in ar_r:
-        user_account, money_pool_radio, money_pool = inner_loop(t, ps, n, fund, r, p_ar)
-        set_radio_ts[:, i] = money_pool_radio
+        money_pool_radio = np.zeros(t)
+        for k in range(10):
+            money_pool_radio += inner_loop(t, ps, ir, n1, n2, fund, fr, p_ar)
+        set_radio_ts[:, i] = money_pool_radio/10
         i = i + 1
 
     # 作图：在获奖率 p 下奖金池占比的时间序列
@@ -104,9 +140,9 @@ def simulation_loop(ps=0.1):
 
 
 # 平衡试算
-def balance_test(money_pool, user_account, fund, r, t):
+def balance_test(money_pool, user_account, fund, m_r, m_t):
     total = money_pool + np.sum(user_account[-1])
-    fund_return = float(np.sum(fund) * r * (t - 1))
+    fund_return = float(np.sum(fund) * m_r * (m_t - 1))
     print('Total dynamic profit is %9.2f' % total)
     print('Total Fund profit is %9.2f' % fund_return)
 
@@ -198,15 +234,15 @@ def plot_fund_user_account(fund, user_account):
 def plot_allowance_surface(pp, money_pool_radio):
     fig = plt.figure(figsize=(8, 5))
     ax = Axes3D(fig)
-    x = pp * 365 * 100
+    x = pp * 100
     y = np.arange(len(money_pool_radio[:, 0]))
     x, y = np.meshgrid(x, y)
     surf = ax.plot_surface(x, y, money_pool_radio, rstride=1, cstride=1, cmap='rainbow')
     ax.set_xlabel('Rate(%)')
     ax.set_ylabel('Time')
-    ax.set_zlabel('Allowance')
-    ax.set_title('Allowance of each day')
-    ax.view_init(20, 10)
+    ax.set_zlabel('Net')
+    ax.set_title('Allowance + Pool (Recast=%.2f)' % ir)
+    ax.view_init(20, -15)
     fig.colorbar(surf, shrink=0.5, aspect=5)
     plt.show()
 
