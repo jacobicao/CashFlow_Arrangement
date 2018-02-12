@@ -3,3 +3,4 @@
 .ipynb_checkpoints/Untitled-checkpoint.ipynb
 *.txt
 *.html
+*.pyc
