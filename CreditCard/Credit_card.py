@@ -1,5 +1,10 @@
 #!/usr/bin/env python
 # encoding: utf-8
+'''
+需求列表：
+1. 不许逾期，如果确会逾期几天，立刻用小额贷过桥
+2. 要允许多期账单
+'''
 import datetime as dt
 import pandas as pd
 import pandas.tseries.offsets as pto
