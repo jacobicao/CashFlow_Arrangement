@@ -11,7 +11,7 @@ if __name__ == "__main__":
         fc.readline()
         reader = csv.reader(fc)
         for row in reader:
-            Credit_card(pad,row[0],int(row[1]),int(row[2]),int(row[3]),0)
+            Credit_card(pad,row[0],int(row[1]),int(row[2]),int(row[3]))
 
     with open('now.csv') as fn:
         fn.readline()

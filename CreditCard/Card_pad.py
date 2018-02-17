@@ -33,12 +33,13 @@ class Card_pad():
                 continue
             if not cc.should_cash_out(t.date()):
                 continue
-            a = min(cc.limit-cc.debt,c.debt)
-            print('%s: %s - %.f -> %s'%(t.date(),cc.name,a,c.name),file=self.f1)
-            print('%s: %s - %.f -> %s'%(t.date(),cc.name,a,c.name))
+            this_debt = c.get_this_debt(t.date())
+            a = min(cc.limit-cc.debt,this_debt)
+            print('%s: %s - %.f -> %s'%(t.date(),cc.name,a,c.get_name()),file=self.f1)
+            print('%s: %s - %.f -> %s'%(t.date(),cc.name,a,c.get_name()))
             cc.consume(t,a)
             c.repay(a)
-            if c.debt < 0.01:
+            if c.get_this_debt(t.date()) < 0.01:
                 return True
         return False
 
