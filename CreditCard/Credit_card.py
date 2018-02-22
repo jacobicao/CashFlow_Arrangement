@@ -2,9 +2,8 @@
 # encoding: utf-8
 '''
 需求列表：
-1. 考虑定期收入
-2. 小额贷也纳入卡包
-3. 可能的话应该尽量迟还
+1. 小额贷也纳入卡包
+2. 可能的话应该尽量迟还
 '''
 import datetime as dt
 import pandas.tseries.offsets as pto

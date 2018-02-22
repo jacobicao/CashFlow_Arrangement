@@ -28,5 +28,5 @@ class pad():
     def set_income(self,i):
         self.income += i
 
-    def comsume(self,t,i):
+    def consume(self,t,i):
         self.income -= i
