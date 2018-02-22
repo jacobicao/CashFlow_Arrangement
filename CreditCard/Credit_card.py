@@ -4,6 +4,7 @@
 需求列表：
 1. 考虑定期收入
 2. 统一打印接口
+3. 小额贷也纳入循环
 '''
 import datetime as dt
 import pandas as pd
