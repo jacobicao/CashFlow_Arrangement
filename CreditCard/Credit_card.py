@@ -72,8 +72,7 @@ class Credit_card():
 
     def consume(self,d,m):
         if self.debt+m > self.limit:
-            print('The comsume number exceeds the credit card limit!')
-            return
+            raise Exception('The comsume number exceeds the credit card limit!')
         self.debt += m
         next_repay_date = self.cal_repay_date(d,self.statement_date,self.repay_date)
         if next_repay_date in self.debt_list.keys():

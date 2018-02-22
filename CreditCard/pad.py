@@ -4,6 +4,7 @@
 class pad():
     def __init__(self):
         self.pool = []
+        self.income = 0
 
     def Attach(self,card):
         self.pool.append(card)
@@ -23,3 +24,9 @@ class pad():
         for c in self.pool:
             s += c.debt
         return s
+
+    def set_income(self,i):
+        self.income += i
+
+    def comsume(self,t,i):
+        self.income -= i
