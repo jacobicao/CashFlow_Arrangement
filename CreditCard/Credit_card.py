@@ -3,11 +3,10 @@
 '''
 需求列表：
 1. 考虑定期收入
-2. 统一打印接口
-3. 小额贷也纳入循环
+2. 小额贷也纳入卡包
+3. 可能的话应该尽量迟还
 '''
 import datetime as dt
-import pandas as pd
 import pandas.tseries.offsets as pto
 # permit cash out on D days after statement date
 D = 5
@@ -16,6 +15,7 @@ C = 3
 # constance
 DayO = dt.timedelta(days=0)
 Day4 = dt.timedelta(days=D)
+Month1 = pto.DateOffset(months=1)
 
 class Credit_card():
     def __init__(self,sub,name,d1,d2,limit):
@@ -40,20 +40,21 @@ class Credit_card():
         if self.debt > self.limit * 0.8:
             return False
         d1 = d.replace(day = self.statement_date)
-        d2 = (d.replace(day = self.statement_date) - pto.DateOffset(months=1)).date()
+        d2 = (d.replace(day = self.statement_date) - Month1).date()
         bre1 = DayO < d-d1 < Day4
         bre2 = DayO < d-d2 < Day4
         return bre1 or bre2
 
-    def need_help(self,d,f):
-        if self.debt < 0.01:
-            return False
+    def is_overdate(self,d):
         dd = min(self.debt_list.keys())
         if d.date()>dd:
-            if not self.load:
-                #print('%s: %s - %.f -> %s'%(d.date()-dt.timedelta(days=1),'小额贷',self.debt_list[dd],self.name),file=self.f1)
-                print('%s: %s - %.f -> %s'%(d.date()-dt.timedelta(days=1),'小额贷',self.debt_list[dd],self.name))
-                self.load = True
+            return True
+        return False
+
+    def need_help(self,d):
+        if self.debt < 0.01:
+            return False
+        if self.is_overdate(d):
             return True
         if (min(self.debt_list.keys())-d.date())<dt.timedelta(days=C):
             return True

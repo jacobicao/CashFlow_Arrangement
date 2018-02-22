@@ -23,4 +23,4 @@ if __name__ == "__main__":
     for t in rng:
         pad.check_repay(t)
 
-    print('\n%s: 当前总负债还有 %.f'%(t.date(),pad.get_total_debt()))
+    print('\n%s: 当前总负债还有 %.f\n'%(t.date(),pad.get_total_debt()))

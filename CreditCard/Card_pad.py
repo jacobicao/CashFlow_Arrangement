@@ -1,31 +1,12 @@
 #!/usr/bin/env python
 # encoding: utf-8
-import os
-if not os.path.exists('log'):
-    os.mkdir('log')
+from report import logger
+from pad import pad
+import datetime as dt
+Day1 = dt.timedelta(days=1)
+formater = '%s: %s - %.f -> %s'
 
-class Card_pad():
-    def __init__(self):
-        self.pool = []
-        self.date_list = dict()
-        self.f1 = open('log/Cash_out_log.txt', 'w+')
-        self.f2 = open('log/Overdate_log.txt', 'w+')
-
-    def __del__(self):
-        self.f1.close()
-        self.f2.close()
-
-    def Attach(self,card):
-        self.pool.append(card)
-
-    def __repr__(self):
-        return ','.join([str(x.debt) for x in self.pool])
-
-    def get_total_debt(self):
-        s = 0
-        for c in self.pool:
-            s += c.debt
-        return s
+class Card_pad(pad):
 
     def help_card(self,t,c):
         for cc in self.pool:
@@ -35,8 +16,7 @@ class Card_pad():
                 continue
             this_debt = c.get_this_debt(t.date())
             a = min(cc.limit-cc.debt,this_debt)
-            print('%s: %s - %.f -> %s'%(t.date(),cc.name,a,c.get_name()),file=self.f1)
-            print('%s: %s - %.f -> %s'%(t.date(),cc.name,a,c.get_name()))
+            logger.info(formater%(t.date(),cc.name,a,c.get_name()))
             cc.consume(t,a)
             c.repay(a)
             if c.get_this_debt(t.date()) < 0.01:
@@ -45,14 +25,11 @@ class Card_pad():
 
     def check_repay(self,t):
         for c in self.pool:
-            if not c.need_help(t,self.f2):
+            if not c.need_help(t):
                 continue
+            if c.is_overdate(t) and not c.load:
+                c.load = True
+                d = c.get_this_debt(t.date())
+                logger.info(formater%(t.date()-Day1,'小额贷',d,c.name))
             if not self.help_card(t,c):
                 continue
-
-    def get_card(self,n):
-        for c in self.pool:
-            if not c.name == n:
-                continue
-            return c
-        raise Exception('No card is named %s'%n)
