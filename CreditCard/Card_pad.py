@@ -26,7 +26,7 @@ class Card_pad(pad):
                 continue
             if not cc.should_cash_out(t.date()):
                 continue
-            if self.transform_debt(t,cc,cc.name,cc.limit-cc.debt,c):
+            if self.transform_debt(t,cc,cc.name,cc.limit*0.8-cc.debt,c):
                 return True
         return False
 

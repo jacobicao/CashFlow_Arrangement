@@ -36,7 +36,7 @@ class Credit_card():
         return 'Card %s: %5.2f'%(self.name,self.debt)
 
     def should_cash_out(self,d):
-        if self.debt > self.limit * 0.8:
+        if self.debt >= self.limit * 0.8:
             return False
         d1 = d.replace(day = self.statement_date)
         d2 = (d.replace(day = self.statement_date) - Month1).date()
