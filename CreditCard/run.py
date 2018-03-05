@@ -38,7 +38,8 @@ def main():
         if t in iic:
             pad.set_income(iic[t])
         pad.check_repay(t)
-    logger.info('\n%s: 当前信用卡负债还有 %.f\n'%(t.date(),pad.get_total_debt()))
+    logger.info('\n%s: 当前信用卡负债还有 %.f'%(t.date(),pad.get_total_debt()))
+    logger.info('%s: 区间总手续费达 %.f\n'%(t.date(),pad.get_total_fee()))
 
 if __name__ == "__main__":
     main()

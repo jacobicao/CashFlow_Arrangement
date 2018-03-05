@@ -4,6 +4,7 @@
 需求列表：
 1. 小额贷也纳入卡包
 2. 可能的话应该尽量迟还
+3. 计算总手续费
 '''
 import datetime as dt
 import pandas.tseries.offsets as pto

@@ -14,6 +14,7 @@ class Card_pad(pad):
         logger.info(formater%(t.date(),cn,a,c.get_name()))
         cc.consume(t,a)
         c.repay(a)
+        self.fee += a*0.006
         if c.get_this_debt(t.date()) < 0.01:
             return True
         return False

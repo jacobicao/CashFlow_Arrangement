@@ -5,6 +5,7 @@ class pad():
     def __init__(self):
         self.pool = []
         self.income = 0
+        self.fee = 0
 
     def Attach(self,card):
         self.pool.append(card)
@@ -18,6 +19,9 @@ class pad():
                 continue
             return c
         raise Exception('No card is named %s'%n)
+
+    def get_total_fee(self):
+        return self.fee
 
     def get_total_debt(self):
         s = 0
