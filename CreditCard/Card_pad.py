@@ -14,7 +14,8 @@ class Card_pad(pad):
         logger.info(formater%(t.date(),cn,a,c.get_name()))
         cc.consume(t,a)
         c.repay(a)
-        self.fee += a*0.006
+        if cn != '工资':
+            self.fee += a*0.006
         if c.get_this_debt(t.date()) < 0.01:
             return True
         return False
@@ -27,7 +28,7 @@ class Card_pad(pad):
                 continue
             if not cc.should_cash_out(t.date()):
                 continue
-            if self.transform_debt(t,cc,cc.name,cc.limit*0.8-cc.debt,c):
+            if self.transform_debt(t,cc,cc.name,cc.limit*0.9-cc.debt,c):
                 return True
         return False
 

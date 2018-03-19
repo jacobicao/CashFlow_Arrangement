@@ -26,6 +26,8 @@ class pad():
     def get_total_debt(self):
         s = 0
         for c in self.pool:
+            if c.name == "房贷":
+                continue
             s += c.debt
         return s
 
