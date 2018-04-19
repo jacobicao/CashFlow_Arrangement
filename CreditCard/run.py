@@ -7,12 +7,15 @@ from Card_pad import Card_pad, logger
 
 def get_ic():
     iic = dict()
-    with open('data/income.csv') as fi:
-        fi.readline()
-        reader = csv.reader(fi)
-        for w in reader:
-            t = pd.datetime(int(w[0]),int(w[1]),int(w[2]))
-            iic[t] = int(w[3])
+    try:
+        with open('data/income.csv') as fi:
+            fi.readline()
+            reader = csv.reader(fi)
+            for w in reader:
+                t = pd.datetime(int(w[0]),int(w[1]),int(w[2]))
+                iic[t] = int(w[3])
+    except IOError as err:
+        print('File error:'+str(err))
     return iic
 
 def init_pad(pad):
