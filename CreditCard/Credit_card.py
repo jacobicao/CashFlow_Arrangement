@@ -4,6 +4,10 @@
 需求列表：
 1. 小额贷也纳入卡包
 2. 可能的话应该尽量迟还
+3. 出UI，使得可以确认还款或输入记录
+4. 独立出定时还款类目
+5. 后台数据改数据库存储
+6. 保留历史记录
 '''
 import datetime as dt
 import pandas.tseries.offsets as pto
