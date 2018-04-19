@@ -27,7 +27,15 @@ class Debt(BaseModel):
     did = Column(Integer,primary_key=True)
     num = Column(Float)
     P_time = Column(Date)
-    
+
+
+class Income(BaseModel):
+    __tablename__ = 'income'
+    uid = Column(Integer,ForeignKey('user.uid'))
+    iid = Column(Integer,primary_key=True)
+    num = Column(Float)
+    P_time = Column(Date)
+
 
 # 用户
 def add_user(s):
@@ -35,54 +43,98 @@ def add_user(s):
     stu = User(name = s)
     session.add(stu)
     session.commit()
-    
-def delete_stu(s):
+    session.close()
+
+def delete_user(s):
     session = DBSession()
     query = session.query(User.name)
     query.filter(User.name==s).delete()
     session.commit()
-    
-    
+    session.close()
+
+def find_user(s):
+    session = DBSession()
+    query = session.query(User.uid)
+    id = query.filter(User.name==s).first()[0]
+    session.close()
+    return id
+
 # 卡
 def add_card(u,s,a,p,f):
     session = DBSession()
     card = Card(uid = u, name = s, A_day = a, P_day = p, num = f)
     session.add(card)
     session.commit()
-    
+    session.close()
+
 def delete_card(c):
     session = DBSession()
     query = session.query(Card.cid)
     query.filter(Card.cid==c).delete()
     session.commit()
-    
-    
+    session.close()
+
+def find_card(u):
+    session = DBSession()
+    query = session.query(Card.cid,Card.A_day,Card.P_day,Card.num)
+    re = query.filter(Card.uid==u).all()
+    session.close()
+    return re
+
 # 债
 def add_debt(u,c,t,n):
     session = DBSession()
-    debt = Debt(uid = u, cid = c, P_time=t,num=n)
+    id = session.query(Card.cid).filter(Card.name==c)
+    debt = Debt(uid = u, cid = id, P_time=t,num=n)
     session.add(debt)
     session.commit()
-    
+    session.close()
+
 def delete_debt(d):
     session = DBSession()
     query = session.query(Debt.did)
     query.filter(Debt.did==d).delete()
     session.commit()
-    
+    session.close()
+
 def find_debt(u):
     session = DBSession()
-    query = session.query(Debt.uid)
-    print(query.filter(Debt.uid==u).all())
+    query = session.query(Debt.cid,Debt.P_time,Debt.num)
+    re = query.filter(Debt.uid==u).all()
+    session.close()
+    return re
 
-    
+
+# 收入
+def add_income(u,t,n):
+    session = DBSession()
+    income = Income(uid=u,P_time=t,num=n)
+    session.add(income)
+    session.commit()
+    session.close()
+
+def delete_income(i):
+    session = DBSession()
+    query = session.query(Income.iid)
+    query.filter(Income.iid==i).delete()
+    session.commit()
+    session.close()
+
+def find_income(u):
+    session = DBSession()
+    query = session.query(Income.P_time,Income.num)
+    re = query.filter(Debt.uid==u).all()
+    session.close()
+    return re
+
+
+# initial database
 def init_db():
     BaseModel.metadata.create_all(DBSession.get())
 
 def drop_db():
     BaseModel.metadata.drop_all()
-    
-init_db()
 
 
-
+if __name__ == '__main__':
+    init_db()
