@@ -15,7 +15,7 @@ class pad():
 
     def get_card(self,n):
         for c in self.pool:
-            if not c.name == n:
+            if not c.id == n:
                 continue
             return c
         raise Exception('No card is named %s'%n)

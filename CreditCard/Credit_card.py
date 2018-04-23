@@ -21,13 +21,14 @@ Day4 = dt.timedelta(days=D)
 Month1 = pto.DateOffset(months=1)
 
 class Credit_card():
-    def __init__(self,sub,name,d1,d2,limit):
+    def __init__(self,sub,id,name,d1,d2,limit):
         if d1 > 28:
             raise Exception('The statement date must less than 29!')
         self.statement_date = d1
         if d2>28:
             raise Exception('The repay date must less than 29!')
         self.repay_date = d2
+        self.id = id
         self.name = name
         self.limit = limit
         self.debt = 0

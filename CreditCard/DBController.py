@@ -76,7 +76,7 @@ def delete_card(c):
 
 def find_card(u):
     session = DBSession()
-    query = session.query(Card.cid,Card.A_day,Card.P_day,Card.num)
+    query = session.query(Card.cid,Card.name,Card.A_day,Card.P_day,Card.num)
     re = query.filter(Card.uid==u).all()
     session.close()
     return re
@@ -99,8 +99,8 @@ def delete_debt(d):
 
 def find_debt(u):
     session = DBSession()
-    query = session.query(Debt.cid,Debt.P_time,Debt.num)
-    re = query.filter(Debt.uid==u).all()
+    query = session.query(Debt.cid,Card.name,Debt.P_time,Debt.num)
+    re = query.filter(Card.cid==Debt.cid,Debt.uid==u).all()
     session.close()
     return re
 

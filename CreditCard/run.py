@@ -16,9 +16,9 @@ def get_ic():
 
 def init_pad(pad):
     for v in find_card(uid):
-        Credit_card(pad,v[0],int(v[1]),int(v[2]),int(v[3]))
+        Credit_card(pad,v[0],v[1],int(v[2]),int(v[3]),int(v[4]))
     for v in find_debt(uid):
-        pad.get_card(v[0]).consume(v[1],int(v[2]))
+        pad.get_card(v[0]).consume(v[2],int(v[3]))
     return
 
 def main():
