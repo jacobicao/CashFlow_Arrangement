@@ -6,6 +6,7 @@ class pad():
         self.pool = []
         self.income = 0
         self.fee = 0
+        self.plan = []
 
     def Attach(self,card):
         self.pool.append(card)
@@ -18,7 +19,7 @@ class pad():
             if not c.id == n:
                 continue
             return c
-        raise Exception('No card is named %s'%n)
+        raise Exception('No card\'s id is %s'%n)
 
     def get_total_fee(self):
         return self.fee
@@ -26,7 +27,7 @@ class pad():
     def get_total_debt(self):
         s = 0
         for c in self.pool:
-            if c.name == "HOME":
+            if c.name == "房贷":
                 continue
             s += c.debt
         return s

@@ -9,7 +9,7 @@ DB_CONNECT = DB_name + ':' + DB_P + '@' + DB_AD + '/' + DB_DB + '?' + DB_CARRSET
 
 class DBC:
     def __init__(self):
-        self.engine_name = "mysql+pymysql://"+DB_CONNECT
+        self.engine_name = "mysql+mysqlconnector://"+DB_CONNECT
         self.engine = create_engine(self.engine_name)
         self.DBSession = sessionmaker(bind=self.engine)
 

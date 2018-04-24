@@ -14,6 +14,21 @@ def get_ic(uid):
         iic[v[0]] = int(v[1])
     return iic
 
+def card_list(uid):
+    for v in find_card(uid):
+        print(v[0],':',v[1])
+
+def debt_list(uid):
+    l = []
+    for v in find_debt(uid):
+        if v[1] == '房贷':
+            continue
+        print('%d:%s consume %d on %s'%(v[4],v[1],v[3],v[2]))
+        l.append(v[4])
+    return l
+
+def delete_one_debt(uid,did):
+    delete_debt(uid,did)
 
 def init_pad(pad,uid):
     for v in find_card(uid):
@@ -22,12 +37,15 @@ def init_pad(pad,uid):
         pad.get_card(v[0]).consume(v[2],int(v[3]))
     return
 
+    
+def add_ont_debt(u,c,t,n):
+    add_debt(u,c,pd.to_datetime(t).date(),n)
 
 def get_pad():
     return Card_pad()
 
 
-def show_plan(pad,iic,dt):
+def cal_plan(pad,iic,dt):
     rng = pd.date_range(dt,'2018-12-31')
     for t in rng:
         if t.date() in iic:
@@ -35,3 +53,8 @@ def show_plan(pad,iic,dt):
         pad.check_repay(t)
     logger.info('\n%s: 当前信用卡负债还有 %.f'%(t.date(),pad.get_total_debt()))
     logger.info('%s: 区间总手续费达 %.f\n'%(t.date(),pad.get_total_fee()))
+    plan = pd.DataFrame(pad.plan)
+    plan.columns = ['date','take','num','repay']
+    plan.index = pd.to_datetime(plan.date)
+    del plan['date']
+    return plan

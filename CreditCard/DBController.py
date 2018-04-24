@@ -55,9 +55,11 @@ def delete_user(s):
 def find_user(s):
     session = DBSession()
     query = session.query(User.uid)
-    id = query.filter(User.name==s).first()[0]
+    id = query.filter(User.name==s).first()
     session.close()
-    return id
+    if id is None:
+        return 0
+    return id[0]
 
 # 卡
 def add_card(u,s,a,p,f):
@@ -84,23 +86,22 @@ def find_card(u):
 # 债
 def add_debt(u,c,t,n):
     session = DBSession()
-    id = session.query(Card.cid).filter(Card.name==c)
-    debt = Debt(uid = u, cid = id, P_time=t,num=n)
+    debt = Debt(uid = u, cid = c, P_time=t,num=n)
     session.add(debt)
     session.commit()
     session.close()
 
-def delete_debt(d):
+def delete_debt(u,d):
     session = DBSession()
     query = session.query(Debt.did)
-    query.filter(Debt.did==d).delete()
+    query.filter(Debt.uid==u,Debt.did==d).delete()
     session.commit()
     session.close()
 
 def find_debt(u):
     session = DBSession()
-    query = session.query(Debt.cid,Card.name,Debt.P_time,Debt.num)
-    re = query.filter(Card.cid==Debt.cid,Debt.uid==u).all()
+    query = session.query(Debt.cid,Card.name,Debt.P_time,Debt.num,Debt.did)
+    re = query.filter(Card.cid==Debt.cid,Debt.uid==u).order_by(Debt.P_time).all()
     session.close()
     return re
 

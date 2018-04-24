@@ -11,7 +11,8 @@ class Card_pad(pad):
     def transform_debt(self,t,cc,cn,num,c):
         this_debt = c.get_this_debt(t.date())
         a = min(num,this_debt)
-        logger.info(formater%(t.date(),cn,a,c.get_name()))
+        #logger.info(formater%(t.date(),cn,a,c.get_name()))
+        self.plan.append((t.date(),cn,a,c.get_name()))
         cc.consume(t,a)
         c.repay(a)
         if cn != '工资':
@@ -39,6 +40,7 @@ class Card_pad(pad):
             if c.is_overdate(t) and not c.load:
                 c.load = True
                 a = c.get_this_debt(t.date())
-                logger.info(formater%(t.date()-Day1,'小额贷',a,c.name))
+                #logger.info(formater%(t.date()-Day1,'小额贷',a,c.name))
+                self.plan.append((t.date()-Day1,'现贷',a,c.name))
             if not self.help_card(t,c):
                 continue
