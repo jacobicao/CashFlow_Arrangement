@@ -38,7 +38,7 @@ class CardPad(Pad):
         for c in self.pool:
             if not c.need_help(t):
                 continue
-            if c.is_overdate(t) and not c.load:
+            if c.is_over_date(t) and not c.load:
                 c.load = True
                 a = c.get_this_debt(t.date())
                 # logger.info(format_er%(t.date()-Day1,'小额贷',a,c.name))
