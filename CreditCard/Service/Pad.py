@@ -1,25 +1,26 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-class pad():
+
+class Pad:
     def __init__(self):
         self.pool = []
         self.income = 0
         self.fee = 0
         self.plan = []
 
-    def Attach(self,card):
-        self.pool.append(card)
-
     def __repr__(self):
         return ','.join([str(x.debt) for x in self.pool])
 
-    def get_card(self,n):
+    def attach(self, card):
+        self.pool.append(card)
+
+    def get_card(self, n):
         for c in self.pool:
             if not c.id == n:
                 continue
             return c
-        raise Exception('No card\'s id is %s'%n)
+        raise Exception('No card\'s id is %s' % n)
 
     def get_total_fee(self):
         return self.fee
@@ -32,8 +33,8 @@ class pad():
             s += c.debt
         return s
 
-    def set_income(self,i):
+    def set_income(self, i):
         self.income += i
 
-    def consume(self,t,i):
+    def consume(self, t, i):
         self.income -= i

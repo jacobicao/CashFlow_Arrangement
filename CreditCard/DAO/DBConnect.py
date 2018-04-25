@@ -1,11 +1,12 @@
-from sqlalchemy.orm import sessionmaker, relationship
+from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 DB_name = 'sa'
 DB_P = '1234'
 DB_AD = 'localhost'
 DB_DB = 'credit_card_system'
-DB_CARRSET = 'charset=utf8'
-DB_CONNECT = DB_name + ':' + DB_P + '@' + DB_AD + '/' + DB_DB + '?' + DB_CARRSET
+DB_CARR_SET = 'charset=utf8'
+DB_CONNECT = DB_name + ':' + DB_P + '@' + DB_AD + '/' + DB_DB + '?' + DB_CARR_SET
+
 
 class DBC:
     def __init__(self):
@@ -18,5 +19,6 @@ class DBC:
 
     def get(self):
         return self.engine
+
 
 DBSession = DBC()
