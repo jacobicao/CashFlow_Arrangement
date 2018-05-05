@@ -45,12 +45,15 @@ def card_list(uid):
 # 账单类
 def debt_list(uid):
     ll = []
+    a = 0
     print('=' * 20)
     for v in DebtDao.find_debt(uid):
         if v[1] == '房贷':
             continue
-        print('%2d:%s 消费 %d 在 %s' % (v[4], v[1], v[3], v[2]))
+        a+=v[3]
+        print('%2d:%s 消费 %5d 在 %s' % (v[4], v[1], v[3], v[2]))
         ll.append(v[4])
+    print('共: %6d'%a)
     print('=' * 20)
     return ll
 
@@ -101,11 +104,13 @@ def cal_plan(pad, iic, dt):
         pad.check_repay(t)
     # logger.info('\n%s: 当前信用卡负债还有 %.f' % (t.date(), pad.get_total_debt()))
     # logger.info('%s: 区间总手续费达 %.f\n' % (t.date(), pad.get_total_fee()))
+    a = '\n%s: 当前信用卡负债还有 %.f' % (t.date(), pad.get_total_debt())
+    a += ('\n%s: 区间总手续费达 %.f\n' % (t.date(), pad.get_total_fee()))
     col = ['date', 'take', 'num', 'repay']
     plan = pd.DataFrame(pad.plan, columns=col)
     plan.index = pd.to_datetime(plan.date)
     del plan['date']
-    return plan
+    return plan,a
 
 
 def show_plan(uid):
@@ -113,10 +118,11 @@ def show_plan(uid):
     pad = CardPad()
     init_pad(pad, uid)
     iic = get_ic(uid)
-    plan = cal_plan(pad, iic, dt)
+    plan,a = cal_plan(pad, iic, dt)
     plan.to_csv('log/Cash_out_plan.csv', float_format='%d')
     print('=' * 20)
     print(plan)
+    print(a)
     print('=' * 20)
 
 
@@ -141,14 +147,15 @@ record_word = '\n' \
               '(e)退出\n' \
               '请输入:'
 
+
+login_program = progress = {'1': lambda f: f(input_user_name()),
+                            '2': lambda f: f(log_on_user(input('请输入用户名:')))}
 login_word = '(1)登录\n' \
              '(2)注册\n' \
              '(e)退出it\n' \
              '请输入:'
-login_program = progress = {'1': lambda f: f(input_user_name()),
-                            '2': lambda f: f(log_on_user(input('请输入用户名:')))}
 
-
+             
 def general_logic(word, program, x):
     import time
     b = True
