@@ -9,7 +9,6 @@ def log_on_user(s):
 
 def input_user_name():
     uid = UserDao.find_user(input('输入用户名:'))
-    while not uid:
+    if not uid:
         print('用户名不存在!')
-        uid = UserDao.find_user(input('输入用户名:'))
     return uid

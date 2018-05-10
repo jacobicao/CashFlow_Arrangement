@@ -24,9 +24,27 @@ def cal_plan(pad, iic, dt):
     a += ('\n%s: 区间总手续费达 %.f\n' % (t.date(), pad.get_total_fee()))
     col = ['date', 'take', 'num', 'repay']
     plan = pd.DataFrame(pad.plan, columns=col)
-    plan.index = pd.to_datetime(plan.date)
-    del plan['date']
+    # plan.index = pd.to_datetime(plan.date)
+    # del plan['date']
     return plan,a
+
+
+def print_plan(plan,a):
+    format_er = '{}:{}: {:>6} - {:,>.0f} -> {:>6}'
+    dd = []
+    for index, row in plan.iterrows():
+        dd.append(format_er.format(index,row['date'],row['take'],row['num'],row['repay']))
+    dd = '\n'.join(dd)
+    print(dd)
+    print(a)
+    print('=' * 20)
+    s = input('要保存吗?(y/n)')
+    if s=='y':
+        import os
+        if not os.path.exists('log'):
+            os.mkdir('log')
+        with open('log/CashOutPlan.txt','w') as f:
+            f.write(dd)
 
 
 def show_plan(uid):
@@ -36,16 +54,7 @@ def show_plan(uid):
     iic = get_ic(uid)
     plan,a = cal_plan(pad, iic, dt)
     print('=' * 20)
-    if len(plan) == 0:
-        print('=' * 20)
-        print('没有数据')
+    if not len(plan):
+        print('=' * 20 + '\n没有数据')
         return
-    print(plan)
-    print(a)
-    print('=' * 20)
-    s = input('要保存吗?(y/n)')
-    if s=='y':
-        import os
-        if not os.path.exists('log'):
-            os.mkdir('log')
-        plan.to_csv('log/Cash_out_plan.csv', float_format='%d')
+    print_plan(plan,a)

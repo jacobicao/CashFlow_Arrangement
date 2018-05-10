@@ -4,6 +4,8 @@ import Service.MyApi as MyApi
 
 
 def inner_logic(uid):
+    if uid == 0:
+        return
     MyApi.general_logic(MyApi.record_word, MyApi.record_program, uid)
 
 
