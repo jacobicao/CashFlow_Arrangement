@@ -1,9 +1,9 @@
-import pandas as pd
 from Service.CardService import *
 from Service.UserService import *
 from Service.IncomeService import *
 from Service.DebtService import *
 from Service.PadService import *
+from Service.RepayService import *
 
 
 record_program = {'1': show_plan,
@@ -16,6 +16,8 @@ record_program = {'1': show_plan,
                   '8': income_list,
                   '9': add_one_income,
                   '10': delete_one_income,
+                  '11': add_one_repay,
+                  '12': delete_one_repay,
                   }
 record_word = '\n' \
               '(1)查看计划\n'        \
@@ -28,6 +30,8 @@ record_word = '\n' \
               '(8)查看所有收入\n'     \
               '(9)增加一条收入\n'     \
               '(10)删除一条收入\n'    \
+              '(11)增加一条还款记录\n'   \
+              '(12)删除一条还款记录\n'   \
               '(e)退出\n'            \
               '请输入:'
 

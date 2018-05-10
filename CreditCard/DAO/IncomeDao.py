@@ -24,3 +24,19 @@ def find_income(u):
     re = query.filter(Debt.uid == u).all()
     session.close()
     return re
+
+
+def use_incomego(u,i,t,n):
+    session = DBSession()
+    incomego = Incomego(uid=u, iid=i, P_time=t, num=n)
+    session.add(incomego)
+    session.commit()
+    session.close()
+
+
+def delete_incomego(g):
+    session = DBSession()
+    query = session.query(Incomego.gid)
+    query.filter(Incomego.gid == g).delete()
+    session.commit()
+    session.close()

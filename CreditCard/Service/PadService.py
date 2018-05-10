@@ -3,6 +3,7 @@ from Algorithm.CreditCard import CreditCard
 from Service.IncomeService import get_ic
 import DAO.DebtDao as DebtDao
 import DAO.CardDao as CardDao
+import DAO.RepayDao as RepayDao
 import pandas as pd
 
 # 卡包类
@@ -11,6 +12,8 @@ def init_pad(pad, uid):
         CreditCard(pad, v[0], v[1], int(v[2]), int(v[3]), int(v[4]))
     for v in DebtDao.find_debt(uid):
         pad.get_card(v[0]).consume(v[2], int(v[3]))
+    for v in RepayDao.find_repay(uid):
+        pad.get_card(v[0]).repay(int(v[3]))
     return
 
 
@@ -40,11 +43,15 @@ def print_plan(plan,a):
     print('=' * 20)
     s = input('要保存吗?(y/n)')
     if s=='y':
-        import os
-        if not os.path.exists('log'):
-            os.mkdir('log')
-        with open('log/CashOutPlan.txt','w') as f:
-            f.write(dd)
+        save_plan(dd)
+
+
+def save_plan(dd):
+    import os
+    if not os.path.exists('log'):
+        os.mkdir('log')
+    with open('log/CashOutPlan.txt','w') as f:
+        f.write(dd)
 
 
 def show_plan(uid):

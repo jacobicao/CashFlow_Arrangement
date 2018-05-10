@@ -1,26 +1,23 @@
 import datetime as dt
-import DAO.DebtDao as DebtDao
+import DAO.RepayDao as RepayDao
 from Service.CardService import card_list
 from Algorithm.util import is_float
 
 
-def debt_list(uid):
+def repay_list(uid):
     ll = []
     a = 0
     print('=' * 20)
-    for v in DebtDao.find_debt(uid):
+    for v in RepayDao.find_repay(uid):
         if v[1] == '房贷':
             continue
-        a+=v[3]
-        print('%2d:%s 消费 %5d 在 %s' % (v[4], v[1], v[3], v[2]))
+        print('%2d: %s: %s 还款 %5d ' % (v[4], v[2], v[1], v[3]))
         ll.append(v[4])
     print('=' * 20)
-    if len(ll):
-        print('共: %6d'%a)
     return ll
 
 
-def add_one_debt(uid):
+def add_one_repay(uid):
     ll = card_list(uid)
     if len(ll)==0:
         print('当前没有卡片，请先添加卡片.')
@@ -29,27 +26,27 @@ def add_one_debt(uid):
     if not cid.isdigit() or int(cid) not in ll:
         print('输入错误')
         return
-    num = input('刷了多少?')
+    num = input('还了多少?')
     if not is_float(num):
         print('输入错误')
         return
     t = input('什么时候(YYYY-MM-DD)?')
     try:
-        DebtDao.add_debt(uid, cid, dt.datetime.strptime(t,'%Y-%m-%d'), num)
+        RepayDao.add_repay(uid, cid, dt.datetime.strptime(t,'%Y-%m-%d'), num)
     except Exception as e:
         print('输入错误:', e)
     else:
         print('添加成功!')
 
 
-def delete_one_debt(uid):
-    ll = debt_list(uid)
+def delete_one_repay(uid):
+    ll = repay_list(uid)
     if len(ll) == 0:
         print('没有记录')
         return
-    did = input('哪一条?')
-    if not did.isdigit() or int(did) not in ll:
+    rid = input('哪一条?')
+    if not rid.isdigit() or int(rid) not in ll:
         print('输入错误')
         return
-    DebtDao.delete_debt(uid, int(did))
+    RepayDao.delete_repay(uid, int(rid))
     print('删除成功!')

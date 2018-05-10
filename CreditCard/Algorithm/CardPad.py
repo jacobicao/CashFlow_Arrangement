@@ -40,6 +40,6 @@ class CardPad(Pad):
             if c.is_over_date(t) and not c.load:
                 c.load = True
                 a = c.get_this_debt(t.date())
-                self.plan.append((t.date() - Day1, '现贷', a, c.name))
+                self.plan.append((t.date() - Day1, '现金贷', a, c.name))
             if not self.help_card(t, c):
                 continue

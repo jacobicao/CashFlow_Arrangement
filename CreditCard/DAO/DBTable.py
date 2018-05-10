@@ -28,6 +28,16 @@ class Debt(BaseModel):
     did = Column(Integer, primary_key=True)
     num = Column(Float)
     P_time = Column(Date)
+    paidoff = Column(Integer,default=0)
+
+
+class Repay(BaseModel):
+    __tablename__ = 'repay'
+    uid = Column(Integer, ForeignKey('user.uid'))
+    cid = Column(Integer, ForeignKey('card.cid'))
+    rid = Column(Integer, primary_key=True)
+    num = Column(Float)
+    P_time = Column(Date)
 
 
 class Income(BaseModel):
@@ -37,6 +47,14 @@ class Income(BaseModel):
     num = Column(Float)
     P_time = Column(Date)
 
+
+class Incomego(BaseModel):
+    __tablename__ = 'incomego'
+    uid = Column(Integer, ForeignKey('user.uid'))
+    iid = Column(Integer, ForeignKey('income.iid'))
+    gid = Column(Integer, primary_key=True)
+    num = Column(Float)
+    P_time = Column(Date)
 
 # initial database
 def init_db():
