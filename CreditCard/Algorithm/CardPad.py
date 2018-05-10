@@ -10,11 +10,13 @@ class CardPad(Pad):
     def transform_debt(self, t, cc, cn, num, c):
         this_debt = c.get_this_debt(t.date())
         a = min(num, this_debt)
-        self.plan.append((t.date(), cn, a, c.get_name()))
-        cc.consume(t, a)
-        c.repay(a)
+        p = a
         if cn != '工资':
-            self.fee += a * 0.006
+            p = round(a*(1+self.radio),2)
+            self.fee += a * self.radio
+        self.plan.append((t.date(), cn, p, c.get_name()))
+        cc.consume(t, p)
+        c.repay(a)
         if c.get_this_debt(t.date()) < 0.01:
             return True
         return False

@@ -8,6 +8,7 @@ class Pad:
         self.income = 0
         self.fee = 0
         self.plan = []
+        self.radio = 0.006
 
     def __repr__(self):
         return ','.join([str(x.debt) for x in self.pool])

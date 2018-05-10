@@ -105,6 +105,6 @@ class CreditCard:
 
     def get_name(self):
         if self.load:
-            return '现贷'
+            return '现金贷'
         else:
             return self.name

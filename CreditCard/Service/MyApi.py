@@ -12,6 +12,8 @@ record_program = {'1': show_plan,
                   '4': delete_one_debt,
                   '5': add_one_card,
                   '6': delete_one_card,
+                  '7': add_one_income,
+                  '8': delete_one_income,
                   }
 record_word = '\n' \
               '(1)查看计划\n'        \
@@ -20,6 +22,8 @@ record_word = '\n' \
               '(4)删除一条刷卡记录\n'  \
               '(5)增加一张卡片\n'     \
               '(6)删除一张卡片\n'     \
+              '(7)增加一条收入\n'     \
+              '(8)删除一条收入\n'     \
               '(e)退出\n'            \
               '请输入:'
 

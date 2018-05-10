@@ -30,7 +30,7 @@ def cal_plan(pad, iic, dt):
 
 
 def print_plan(plan,a):
-    format_er = '{}:{}: {:>6} - {:,>.0f} -> {:>6}'
+    format_er = '{}: {}: {:>6} - {:>6.0f} -> {:>6}'
     dd = []
     for index, row in plan.iterrows():
         dd.append(format_er.format(index,row['date'],row['take'],row['num'],row['repay']))

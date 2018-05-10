@@ -20,7 +20,7 @@ def delete_income(i):
 
 def find_income(u):
     session = DBSession()
-    query = session.query(Income.P_time, Income.num)
+    query = session.query(Income.P_time, Income.num, Income.iid)
     re = query.filter(Debt.uid == u).all()
     session.close()
     return re
