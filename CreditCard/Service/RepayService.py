@@ -53,19 +53,23 @@ def delete_one_repay(uid):
     RepayDao.delete_repay(uid, int(rid))
     print('删除成功!')
 
-#TODO: 细化实现 & 考虑事务
-def quick_repay(uid):
-    in_cid = 0
-    num = 0
-    if type == 1:
+#TODO: 考虑事务
+def quick_repay(uid,rc):
+    print(rc)
+    in_cid = str(rc['cid'])
+    num = rc['num']
+    t = rc['date'].date()
+    if rc['repaytype']:
         #卡还卡
-        out_cid = 0
-        t = '2018-6-20'
+        out_cid = str(rc['oid'])
         rl = round(num/1.006,2)
-        DebtDao.add_debt(uid, out_cid, dt.datetime.strptime(t,'%Y-%m-%d'), num)
-        RepayDao.add_repay(uid, in_cid, dt.datetime.strptime(t,'%Y-%m-%d'), rl)
+        DebtDao.add_debt(uid, out_cid, t, num)
+        RepayDao.add_repay(uid, in_cid, t, rl)
+        print('添加成功!')
     else:
+        print('该类型未实现')
+        return
         #工资还卡
-        iid = 0
-        IncomeDao.use_incomego(uid,iid,dt.datetime.strptime(t,'%Y-%m-%d'), num)
-        RepayDao.add_repay(uid, in_cid, dt.datetime.strptime(t,'%Y-%m-%d'), num)
+        iid = str(rc['oid'])
+        IncomeDao.use_incomego(uid, iid, t, num)
+        RepayDao.add_repay(uid, in_cid, t, num)

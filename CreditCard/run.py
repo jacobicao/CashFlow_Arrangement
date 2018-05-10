@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # encoding: utf-8
-import Service.MyApi as MyApi
+import MyApi
 
 
 def inner_logic(uid):

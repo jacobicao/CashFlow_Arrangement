@@ -11,10 +11,14 @@ class CardPad(Pad):
         this_debt = c.get_this_debt(t.date())
         a = min(num, this_debt)
         p = a
+        inc = 0
+        oid = 0
         if cn != '工资':
             p = round(a*(1+self.radio),2)
             self.fee += a * self.radio
-        self.plan.append((t.date(), cn, p, c.get_name()))
+            inc = 1
+            oid = cc.cid
+        self.plan.append((t.date(), cn, p, c.get_name(),inc,oid,c.cid))
         cc.consume(t, p)
         c.repay(a)
         if c.get_this_debt(t.date()) < 0.01:
@@ -40,6 +44,6 @@ class CardPad(Pad):
             if c.is_over_date(t) and not c.load:
                 c.load = True
                 a = c.get_this_debt(t.date())
-                self.plan.append((t.date() - Day1, '现金贷', a, c.name))
+                self.plan.append((t.date() - Day1, '现金贷', a, c.name,0,c.cid,c.cid))
             if not self.help_card(t, c):
                 continue

@@ -1,6 +1,7 @@
 from Algorithm.CardPad import CardPad
 from Algorithm.CreditCard import CreditCard
 from Service.IncomeService import get_ic
+from Service.RepayService import quick_repay
 import DAO.DebtDao as DebtDao
 import DAO.CardDao as CardDao
 import DAO.RepayDao as RepayDao
@@ -25,25 +26,27 @@ def cal_plan(pad, iic, dt):
         pad.check_repay(t)
     a = '\n%s: 当前信用卡负债还有 %.f' % (t.date(), pad.get_total_debt())
     a += ('\n%s: 区间总手续费达 %.f\n' % (t.date(), pad.get_total_fee()))
-    col = ['date', 'take', 'num', 'repay']
+    col = ['date', 'take', 'num', 'repay','repaytype','oid','cid']
     plan = pd.DataFrame(pad.plan, columns=col)
-    # plan.index = pd.to_datetime(plan.date)
-    # del plan['date']
+    plan.date = pd.to_datetime(plan.date)
     return plan,a
 
 
-def print_plan(plan,a):
-    format_er = '{}: {}: {:>6} - {:>6.0f} -> {:>6}'
+def print_plan(uid,plan,a):
+    format_er = '{}: {}: {:>6} - {:>6.0f} -> {:>6}|{}{}{}'
     dd = []
     for index, row in plan.iterrows():
-        dd.append(format_er.format(index,row['date'],row['take'],row['num'],row['repay']))
+        dd.append(format_er.format(index,row['date'].date(),row['take'],row['num'],row['repay'],
+        row['repaytype'],row['oid'],row['cid']))
     dd = '\n'.join(dd)
     print(dd)
     print(a)
     print('=' * 20)
-    s = input('要保存吗?(y/n)')
-    if s=='y':
-        save_plan(dd)
+    save_plan(dd)
+    tp = input('要快速还款吗?(y/n)')
+    if tp == 'y':
+        pid = input('哪一条计划?')
+        quick_repay(uid,plan.iloc[int(pid)])
 
 
 def save_plan(dd):
@@ -64,4 +67,4 @@ def show_plan(uid):
     if not len(plan):
         print('=' * 20 + '\n没有数据')
         return
-    print_plan(plan,a)
+    print_plan(uid,plan,a)

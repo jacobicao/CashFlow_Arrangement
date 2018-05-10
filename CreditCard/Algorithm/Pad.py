@@ -16,9 +16,9 @@ class Pad:
     def attach(self, card):
         self.pool.append(card)
 
-    def get_card(self, n):
+    def get_card(self, cid):
         for c in self.pool:
-            if not c.id == n:
+            if not c.cid == cid:
                 continue
             return c
         raise Exception('No card\'s id is %s' % n)

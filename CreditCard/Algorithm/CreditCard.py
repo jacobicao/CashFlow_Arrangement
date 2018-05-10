@@ -34,14 +34,14 @@ def cal_repay_date(d, state, repay):
 
 
 class CreditCard:
-    def __init__(self, sub, uid, name, d1, d2, limit):
+    def __init__(self, sub, cid, name, d1, d2, limit):
         if d1 > 28:
             raise Exception('The statement date must less than 29!')
         self.statement_date = d1
         if d2 > 28:
             raise Exception('The repay date must less than 29!')
         self.repay_date = d2
-        self.id = uid
+        self.cid = cid
         self.name = name
         self.limit = limit
         self.debt = 0
