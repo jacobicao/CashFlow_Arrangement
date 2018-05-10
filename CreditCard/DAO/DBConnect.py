@@ -19,7 +19,7 @@ class DBC:
             self.engine_name = 'sqlite:///data/cds.db'
         else:
             raise Exception('Error database type!')
-        self.engine = create_engine(self.engine_name)
+        self.engine = create_engine(self.engine_name,echo=True)
         self.DBSession = sessionmaker(bind=self.engine)
 
     def __call__(self):

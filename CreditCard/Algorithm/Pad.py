@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # encoding: utf-8
-
+import datetime as dt
 
 class Pad:
     def __init__(self):
         self.pool = []
-        self.income = 0
+        self.income = []
         self.fee = 0
         self.plan = []
         self.radio = 0.006
@@ -34,8 +34,16 @@ class Pad:
             s += c.debt
         return s
 
-    def set_income(self, i):
-        self.income += i
+    def set_income(self, iid, t, i):
+        print(iid,t,i)
+        return
+        if t in self.income.keys():
+            self.income[0][2] += i
+        else:
+            self.income.append((t,iid,i))
 
     def consume(self, t, i):
-        self.income -= i
+        self.income[0][2] -= i
+
+    def get_income(self,t):
+        return 0

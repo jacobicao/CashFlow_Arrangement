@@ -26,7 +26,8 @@ class CardPad(Pad):
         return False
 
     def help_card(self, t, c):
-        if self.income > 0 and self.transform_debt(t, self, '工资', self.income, c):
+        income = self.get_income(t)
+        if income > 0 and self.transform_debt(t, self, '工资', income, c):
             return True
         for cc in self.pool:
             if cc.name == c.name:

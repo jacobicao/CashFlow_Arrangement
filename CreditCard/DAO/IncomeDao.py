@@ -1,6 +1,6 @@
-from DAO.DBTable import Income, Debt
+from DAO.DBTable import Income, Incomego, Debt
 from DAO.DBConnect import DBSession
-
+from sqlalchemy import func
 
 def add_income(u, t, n):
     session = DBSession()
@@ -20,13 +20,13 @@ def delete_income(i):
 
 def find_income(u):
     session = DBSession()
-    query = session.query(Income.P_time, Income.num, Income.iid)
-    re = query.filter(Debt.uid == u).all()
+    query = session.query(Income.iid, Income.P_time, Income.num)
+    re = query.filter(Income.uid == u).all()
     session.close()
     return re
 
 
-def use_incomego(u,i,t,n):
+def add_incomego(u,i,t,n):
     session = DBSession()
     incomego = Incomego(uid=u, iid=i, P_time=t, num=n)
     session.add(incomego)
@@ -40,3 +40,18 @@ def delete_incomego(g):
     query.filter(Incomego.gid == g).delete()
     session.commit()
     session.close()
+
+def find_incomego(u):
+    session = DBSession()
+    query = session.query(Incomego.gid, Incomego.iid, Incomego.P_time, Incomego.num)
+    re = query.filter(Incomego.uid == u).all()
+    session.close()
+    return re
+
+def find_incomego_sum(u):
+    session = DBSession()
+    # query = session.query(Incomego.iid, (Income.num-func.sum(Incomego.num)).label("num")).group_by(Incomego.iid)
+    query = session.query(Incomego.iid, Income.num, Incomego.num)
+    re = query.filter(Income.iid == Incomego.iid).all()
+    session.close()
+    return re

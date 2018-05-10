@@ -1,10 +1,10 @@
 from Algorithm.CardPad import CardPad
 from Algorithm.CreditCard import CreditCard
-from Service.IncomeService import get_ic
 from Service.RepayService import quick_repay
 import DAO.DebtDao as DebtDao
 import DAO.CardDao as CardDao
 import DAO.RepayDao as RepayDao
+import DAO.IncomeDao as IncomeDao
 import pandas as pd
 
 # 卡包类
@@ -15,17 +15,18 @@ def init_pad(pad, uid):
         pad.get_card(v[0]).consume(v[2], int(v[3]))
     for v in RepayDao.find_repay(uid):
         pad.get_card(v[0]).repay(int(v[3]))
+    for v in IncomeDAO.find_incomego_sum(uid):
+        pad.set_income(v)
     return
 
 
-def cal_plan(pad, iic, dt):
-    rng = pd.date_range(dt, '2018-12-31')
+def cal_plan(pad, iic, dt1,dt2):
+    rng = pd.date_range(dt1, dt2).date
+    iickey = iic.keys()
     for t in rng:
-        if t.date() in iic:
-            pad.set_income(iic[t.date()])
         pad.check_repay(t)
-    a = '\n%s: 当前信用卡负债还有 %.f' % (t.date(), pad.get_total_debt())
-    a += ('\n%s: 区间总手续费达 %.f\n' % (t.date(), pad.get_total_fee()))
+    a = '\n%s: 当前信用卡负债还有 %.f' % (t, pad.get_total_debt())
+    a += ('\n%s: 区间总手续费达 %.f\n' % (t, pad.get_total_fee()))
     col = ['date', 'take', 'num', 'repay','repaytype','oid','cid']
     plan = pd.DataFrame(pad.plan, columns=col)
     plan.date = pd.to_datetime(plan.date)
@@ -33,7 +34,7 @@ def cal_plan(pad, iic, dt):
 
 
 def print_plan(uid,plan,a):
-    format_er = '{}: {}: {:>6} - {:>6.0f} -> {:>6}|{}{}{}'
+    format_er = '{}: {}: {:>6} - {:>6.0f} -> {:>6}|{},{},{}'
     dd = []
     for index, row in plan.iterrows():
         dd.append(format_er.format(index,row['date'].date(),row['take'],row['num'],row['repay'],
@@ -58,11 +59,14 @@ def save_plan(dd):
 
 
 def show_plan(uid):
-    dt = '2018-01-01'
+    ll = IncomeDao.find_incomego_sum(uid)
+    print(ll)
+    return
+    dt_start = '2018-01-01'
+    dt_end = '2018-12-31'
     pad = CardPad()
     init_pad(pad, uid)
-    iic = get_ic(uid)
-    plan,a = cal_plan(pad, iic, dt)
+    plan,a = cal_plan(pad, dt_start, dt_end)
     print('=' * 20)
     if not len(plan):
         print('=' * 20 + '\n没有数据')

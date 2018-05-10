@@ -2,19 +2,12 @@ import DAO.IncomeDao as IncomeDAO
 from Algorithm.util import is_float, is_days, is_date
 import datetime as dt
 
-# 收入类
-def get_ic(uid):
-    iic = dict()
-    for v in IncomeDAO.find_income(uid):
-        iic[v[0]] = int(v[1])
-    return iic
-
 
 def income_list(uid):
     print('='*20)
     ll = []
     for v in IncomeDAO.find_income(uid):
-        print('{2}: {0}: {1:,.0f}'.format(*v))
+        print('{0}: {1}: {2:.0f}'.format(*v))
         ll.append(v[2])
     print('='*20)
     return ll
