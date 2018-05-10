@@ -8,7 +8,7 @@ Day1 = dt.timedelta(days=1)
 
 class CardPad(Pad):
     def transform_debt(self, t, cc, cn, num, c):
-        this_debt = c.get_this_debt(t.date())
+        this_debt = c.get_this_debt(t)
         a = min(num, this_debt)
         p = a
         inc = 0
@@ -18,10 +18,15 @@ class CardPad(Pad):
             self.fee += a * self.radio
             inc = 1
             oid = cc.cid
-        self.plan.append((t.date(), cn, p, c.get_name(),inc,oid,c.cid))
-        cc.consume(t, p)
+        ll = cc.consume(t, p)
+        if cn == '工资' and len(ll):
+            inc = 2
+            for v in ll:
+                self.plan.append((t, cn, p, c.get_name(),inc,v,c.cid))
+        else:
+            self.plan.append((t, cn, p, c.get_name(),inc,oid,c.cid))
         c.repay(a)
-        if c.get_this_debt(t.date()) < 0.01:
+        if c.get_this_debt(t) < 0.01:
             return True
         return False
 
@@ -32,7 +37,7 @@ class CardPad(Pad):
         for cc in self.pool:
             if cc.name == c.name:
                 continue
-            if not cc.should_cash_out(t.date()):
+            if not cc.should_cash_out(t):
                 continue
             if self.transform_debt(t, cc, cc.name, cc.limit * 0.9 - cc.debt, c):
                 return True
@@ -44,7 +49,7 @@ class CardPad(Pad):
                 continue
             if c.is_over_date(t) and not c.load:
                 c.load = True
-                a = c.get_this_debt(t.date())
-                self.plan.append((t.date() - Day1, '现金贷', a, c.name,0,c.cid,c.cid))
+                a = c.get_this_debt(t)
+                self.plan.append((t - Day1, '现金贷', a, c.name,0,c.cid,c.cid))
             if not self.help_card(t, c):
                 continue

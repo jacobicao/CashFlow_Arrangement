@@ -18,3 +18,11 @@ def is_date(s):
     except ValueError:
         return False
     return True
+
+def find_income(t,income):
+    a = 0
+    for v in income:
+        if v[0] == t:
+            break
+        a += 1
+    return a

@@ -50,8 +50,8 @@ def find_incomego(u):
 
 def find_incomego_sum(u):
     session = DBSession()
-    # query = session.query(Incomego.iid, (Income.num-func.sum(Incomego.num)).label("num")).group_by(Incomego.iid)
-    query = session.query(Incomego.iid, Income.num, Incomego.num)
-    re = query.filter(Income.iid == Incomego.iid).all()
+    query = session.query(Income.P_time, Income.iid,
+            (Income.num - func.coalesce(func.sum(Incomego.num),0)).label('num'))
+    re = query.outerjoin(Incomego).group_by(Income.iid).all()
     session.close()
     return re

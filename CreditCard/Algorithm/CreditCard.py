@@ -64,7 +64,7 @@ class CreditCard:
 
     def is_over_date(self, d):
         dd = min(self.debt_list.keys())
-        if d.date() > dd:
+        if d > dd:
             return True
         return False
 
@@ -73,7 +73,7 @@ class CreditCard:
             return False
         if self.is_over_date(d):
             return True
-        if (min(self.debt_list.keys()) - d.date()) < dt.timedelta(days=C):
+        if (min(self.debt_list.keys()) - d) < dt.timedelta(days=C):
             return True
         return False
 

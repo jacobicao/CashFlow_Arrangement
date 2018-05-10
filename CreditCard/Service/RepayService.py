@@ -55,21 +55,22 @@ def delete_one_repay(uid):
 
 #TODO: 考虑事务
 def quick_repay(uid,rc):
-    print(rc)
     in_cid = str(rc['cid'])
     num = rc['num']
     t = rc['date'].date()
-    if rc['repaytype']:
+    if rc['repaytype'] == 1:
         #卡还卡
         out_cid = str(rc['oid'])
         rl = round(num/1.006,2)
         DebtDao.add_debt(uid, out_cid, t, num)
         RepayDao.add_repay(uid, in_cid, t, rl)
         print('添加成功!')
-    else:
-        print('该类型未实现')
-        return
+    elif rc['repaytype'] == 2:
         #工资还卡
-        iid = str(rc['oid'])
-        IncomeDao.use_incomego(uid, iid, t, num)
+        iid = rc['oid']
+        IncomeDao.add_incomego(uid, iid, t, num)
         RepayDao.add_repay(uid, in_cid, t, num)
+        print('添加成功!')
+    else:
+        print('该类型还款方式暂未实现')
+        return

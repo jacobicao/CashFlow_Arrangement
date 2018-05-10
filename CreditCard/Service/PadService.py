@@ -15,14 +15,14 @@ def init_pad(pad, uid):
         pad.get_card(v[0]).consume(v[2], int(v[3]))
     for v in RepayDao.find_repay(uid):
         pad.get_card(v[0]).repay(int(v[3]))
-    for v in IncomeDAO.find_incomego_sum(uid):
+    ll = IncomeDao.find_incomego_sum(uid)
+    for v in ll:
         pad.set_income(v)
     return
 
 
-def cal_plan(pad, iic, dt1,dt2):
+def cal_plan(pad, dt1,dt2):
     rng = pd.date_range(dt1, dt2).date
-    iickey = iic.keys()
     for t in rng:
         pad.check_repay(t)
     a = '\n%s: 当前信用卡负债还有 %.f' % (t, pad.get_total_debt())
@@ -59,9 +59,6 @@ def save_plan(dd):
 
 
 def show_plan(uid):
-    ll = IncomeDao.find_incomego_sum(uid)
-    print(ll)
-    return
     dt_start = '2018-01-01'
     dt_end = '2018-12-31'
     pad = CardPad()

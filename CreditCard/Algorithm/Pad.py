@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf-8
 import datetime as dt
+from Algorithm.util import find_income
 
 class Pad:
     def __init__(self):
@@ -34,16 +35,39 @@ class Pad:
             s += c.debt
         return s
 
-    def set_income(self, iid, t, i):
-        print(iid,t,i)
-        return
-        if t in self.income.keys():
-            self.income[0][2] += i
+    def set_income(self, v):
+        if v[2] < 0.01:
+            return
+        a = find_income(v[0],self.income)
+        if a != len(self.income):
+            self.income[a][2] += v[2]
         else:
-            self.income.append((t,iid,i))
+            self.income.append(list(v))
+            self.income.sort(key=lambda x:x[0])
 
     def consume(self, t, i):
-        self.income[0][2] -= i
+        if not len(self.income):
+            return
+        ll = []
+        while self.income[0][0]<=t and i>0:
+            if self.income[0][2] > i:
+                print('%s: %s use %.0f'%(self.income[0][0],self.income[0][1],i))
+                self.income[0][2] -= i
+                ll.append(self.income[0][1])
+                break
+            else:
+                print('%s: %s use %.0f, clear!'%tuple(self.income[0]))
+                ll.append(self.income[0][1])
+                i -= self.income[0][2]
+                self.income = self.income[1:]
+                if not len(self.income):
+                    break
+        return ll
+
 
     def get_income(self,t):
-        return 0
+        a = 0
+        for v in self.income:
+            if v[0]<=t:
+                a += v[2]
+        return a
