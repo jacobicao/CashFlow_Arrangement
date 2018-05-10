@@ -1,5 +1,5 @@
 import DAO.DebtDao as DebtDao
-from Service.CardApi import card_list
+from Service.CardService import card_list
 
 # 账单类
 def debt_list(uid):
