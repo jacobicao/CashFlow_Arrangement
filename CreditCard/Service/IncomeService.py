@@ -9,6 +9,7 @@ def get_ic(uid):
         iic[v[0]] = int(v[1])
     return iic
 
+
 def income_list(uid):
     print('='*20)
     ll = []
@@ -17,6 +18,7 @@ def income_list(uid):
         ll.append(v[2])
     print('='*20)
     return ll
+
 
 def add_one_income(uid):
     n = input('月收入?')
@@ -33,6 +35,7 @@ def add_one_income(uid):
         print('输入错误:', e)
     else:
         print('添加成功!')
+
 
 def delete_one_income(uid):
     ll = income_list(uid)

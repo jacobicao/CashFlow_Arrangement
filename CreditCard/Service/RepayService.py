@@ -1,5 +1,7 @@
 import datetime as dt
 import DAO.RepayDao as RepayDao
+import DAO.DebtDao as DebtDao
+import DAO.IncomeDao as IncomeDao
 from Service.CardService import card_list
 from Algorithm.util import is_float
 
@@ -50,3 +52,20 @@ def delete_one_repay(uid):
         return
     RepayDao.delete_repay(uid, int(rid))
     print('删除成功!')
+
+#TODO: 细化实现 & 考虑事务
+def quick_repay(uid):
+    in_cid = 0
+    num = 0
+    if type == 1:
+        #卡还卡
+        out_cid = 0
+        t = '2018-6-20'
+        rl = round(num/1.006,2)
+        DebtDao.add_debt(uid, out_cid, dt.datetime.strptime(t,'%Y-%m-%d'), num)
+        RepayDao.add_repay(uid, in_cid, dt.datetime.strptime(t,'%Y-%m-%d'), rl)
+    else:
+        #工资还卡
+        iid = 0
+        IncomeDao.use_incomego(uid,iid,dt.datetime.strptime(t,'%Y-%m-%d'), num)
+        RepayDao.add_repay(uid, in_cid, dt.datetime.strptime(t,'%Y-%m-%d'), num)
