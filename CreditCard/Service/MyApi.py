@@ -10,20 +10,24 @@ record_program = {'1': show_plan,
                   '2': debt_list,
                   '3': add_one_debt,
                   '4': delete_one_debt,
-                  '5': add_one_card,
-                  '6': delete_one_card,
-                  '7': add_one_income,
-                  '8': delete_one_income,
+                  '5': card_list,
+                  '6': add_one_card,
+                  '7': delete_one_card,
+                  '8': income_list,
+                  '9': add_one_income,
+                  '10': delete_one_income,
                   }
 record_word = '\n' \
               '(1)查看计划\n'        \
               '(2)查看当前账单\n'     \
               '(3)增加一条刷卡记录\n'  \
               '(4)删除一条刷卡记录\n'  \
-              '(5)增加一张卡片\n'     \
-              '(6)删除一张卡片\n'     \
-              '(7)增加一条收入\n'     \
-              '(8)删除一条收入\n'     \
+              '(5)查看所有卡片\n'     \
+              '(6)增加一张卡片\n'     \
+              '(7)删除一张卡片\n'     \
+              '(8)查看所有收入\n'     \
+              '(9)增加一条收入\n'     \
+              '(10)删除一条收入\n'    \
               '(e)退出\n'            \
               '请输入:'
 

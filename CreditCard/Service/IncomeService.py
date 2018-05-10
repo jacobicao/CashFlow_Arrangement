@@ -9,11 +9,13 @@ def get_ic(uid):
         iic[v[0]] = int(v[1])
     return iic
 
-def show_ic(uid):
+def income_list(uid):
+    print('='*20)
     ll = []
     for v in IncomeDAO.find_income(uid):
         print('{2}: {0}: {1:,.0f}'.format(*v))
         ll.append(v[2])
+    print('='*20)
     return ll
 
 def add_one_income(uid):
@@ -33,12 +35,10 @@ def add_one_income(uid):
         print('添加成功!')
 
 def delete_one_income(uid):
-    print('='*20)
-    ll = show_ic(uid)
+    ll = income_list(uid)
     if not len(ll):
-        print('='*20+'\n没有数据')
+        print('没有数据')
         return
-    print('='*20)
     iid = input('哪条?')
     if not iid.isdigit() or int(iid) not in ll:
         print('输入错误')

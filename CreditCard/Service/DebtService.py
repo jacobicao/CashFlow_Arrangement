@@ -1,7 +1,7 @@
 import DAO.DebtDao as DebtDao
-import pandas as pd
 from Service.CardService import card_list
 from Algorithm.util import is_float
+import datetime as dt
 
 # 账单类
 def debt_list(uid):
@@ -17,18 +17,17 @@ def debt_list(uid):
     print('=' * 20)
     if len(ll):
         print('共: %6d'%a)
-    else:
-        print('没有记录')
     return ll
 
 
 def delete_one_debt(uid):
     ll = debt_list(uid)
     if len(ll) == 0:
+        print('没有记录')
         return
     did = input('哪一条?')
     if not did.isdigit() or int(did) not in ll:
-        print('输入错误!')
+        print('输入错误')
         return
     DebtDao.delete_debt(uid, int(did))
     print('删除成功!')
@@ -47,9 +46,9 @@ def add_one_debt(uid):
     if not is_float(num):
         print('输入错误')
         return
-    dt = input('什么时候(YYYY-MM-DD)?')
+    t = input('什么时候(YYYY-MM-DD)?')
     try:
-        DebtDao.add_debt(uid, cid, pd.to_datetime(dt).date(), num)
+        DebtDao.add_debt(uid, cid, dt.datetime.strptime(t,'%Y-%m-%d'), num)
     except Exception as e:
         print('输入错误:', e)
     else:
