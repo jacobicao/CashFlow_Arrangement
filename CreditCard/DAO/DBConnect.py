@@ -9,8 +9,16 @@ DB_CONNECT = DB_name + ':' + DB_P + '@' + DB_AD + '/' + DB_DB + '?' + DB_CARR_SE
 
 
 class DBC:
-    def __init__(self):
-        self.engine_name = "mysql+mysqlconnector://"+DB_CONNECT
+    def __init__(self,type = 1):
+        if type == 1:
+            self.engine_name = "mysql+mysqlconnector://"+DB_CONNECT
+        elif type == 2:
+            import os
+            if not os.path.exists('data'):
+                os.mkdir('data')
+            self.engine_name = 'sqlite:///data/cds.db'
+        else:
+            raise Exception('Error database type!')
         self.engine = create_engine(self.engine_name)
         self.DBSession = sessionmaker(bind=self.engine)
 
@@ -21,4 +29,4 @@ class DBC:
         return self.engine
 
 
-DBSession = DBC()
+DBSession = DBC(2)

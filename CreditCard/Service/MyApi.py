@@ -53,22 +53,28 @@ def debt_list(uid):
         a+=v[3]
         print('%2d:%s 消费 %5d 在 %s' % (v[4], v[1], v[3], v[2]))
         ll.append(v[4])
-    print('共: %6d'%a)
     print('=' * 20)
+    if len(ll):
+        print('共: %6d'%a)
+    else:
+        print('没有记录')
     return ll
 
 
 def add_one_debt(uid):
     ll = card_list(uid)
+    if len(ll)==0:
+        print('当前没有卡片，请先添加卡片.')
+        return
     cid = input('哪张卡?')
     if not cid.isdigit() or int(cid) not in ll:
         print('输入错误')
         return
-    dt = input('什么时候(YYYY-MM-DD)?')
     num = input('刷了多少?')
-    while not is_float(num):
-        print('请输入数字,', end='')
-        num = input('刷了多少?')
+    if not is_float(num):
+        print('输入错误')
+        return
+    dt = input('什么时候(YYYY-MM-DD)?')
     try:
         DebtDao.add_debt(uid, cid, pd.to_datetime(dt).date(), num)
     except Exception as e:
@@ -79,6 +85,8 @@ def add_one_debt(uid):
 
 def delete_one_debt(uid):
     ll = debt_list(uid)
+    if len(ll) == 0:
+        return
     did = input('哪一条?')
     if not did.isdigit() or int(did) not in ll:
         print('输入错误!')
@@ -119,11 +127,20 @@ def show_plan(uid):
     init_pad(pad, uid)
     iic = get_ic(uid)
     plan,a = cal_plan(pad, iic, dt)
-    plan.to_csv('log/Cash_out_plan.csv', float_format='%d')
     print('=' * 20)
+    if len(plan) == 0:
+        print('=' * 20)
+        print('没有数据')
+        return
     print(plan)
     print(a)
     print('=' * 20)
+    s = input('要保存吗?(y/n)')
+    if s=='y':
+        import os
+        if not os.path.exists('log'):
+            os.mkdir('log')
+        plan.to_csv('log/Cash_out_plan.csv', float_format='%d')
 
 
 # 工具类
@@ -155,7 +172,7 @@ login_word = '(1)登录\n' \
              '(e)退出it\n' \
              '请输入:'
 
-             
+
 def general_logic(word, program, x):
     import time
     b = True
