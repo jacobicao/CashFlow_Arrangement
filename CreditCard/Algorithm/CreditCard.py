@@ -88,12 +88,20 @@ class CreditCard:
             self.debt_list[next_repay_date] = m
 
     def repay(self, m):
+        if not len(self.debt_list):
+            print('%s has no debt to be paid!'%self.name)
+            return
         self.debt -= m
         dd = min(self.debt_list.keys())
         self.debt_list[dd] -= m
         if 0 == self.debt_list[dd]:
             self.debt_list.pop(dd)
             self.load = False
+
+    def get_first_debt_date(self):
+        if 0 == len(self.debt_list):
+            return
+        return min(self.debt_list.keys())
 
     def get_this_debt(self, t):
         if 0 == len(self.debt_list):

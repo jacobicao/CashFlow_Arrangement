@@ -6,8 +6,17 @@ import DAO.CardDao as CardDao
 import DAO.RepayDao as RepayDao
 import DAO.IncomeDao as IncomeDao
 import pandas as pd
+import datetime as dt
 
-# 卡包类
+
+def save_plan(plan):
+    import os
+    if not os.path.exists('log'):
+        os.mkdir('log')
+    with open('log/CashOutPlan.txt','w') as f:
+        f.write(plan)
+
+
 def init_pad(pad, uid):
     for v in CardDao.find_card(uid):
         CreditCard(pad, v[0], v[1], int(v[2]), int(v[3]), int(v[4]))
@@ -15,14 +24,17 @@ def init_pad(pad, uid):
         pad.get_card(v[0]).consume(v[2], int(v[3]))
     for v in RepayDao.find_repay(uid):
         pad.get_card(v[0]).repay(int(v[3]))
-    ll = IncomeDao.find_incomego_sum(uid)
-    for v in ll:
+    for v in IncomeDao.find_incomego_sum(uid):
         pad.set_income(v)
     return
 
 
-def cal_plan(pad, dt1,dt2):
-    rng = pd.date_range(dt1, dt2).date
+def cal_plan(pad,days):
+    dt_start = pad.get_first_date()
+    if dt_start is None:
+        return [],None
+    dt_start -= dt.timedelta(days=1)
+    rng = pd.date_range(dt_start,periods=days).date
     for t in rng:
         pad.check_repay(t)
     a = '\n%s: 当前信用卡负债还有 %.f' % (t, pad.get_total_debt())
@@ -33,39 +45,44 @@ def cal_plan(pad, dt1,dt2):
     return plan,a
 
 
+# view
 def print_plan(uid,plan,a):
+    print('=' * 20)
+    if not len(plan):
+        print('=' * 20 + '\n没有数据')
+        return
     format_er = '{}: {}: {:>6} - {:>6.0f} -> {:>6}|{},{},{}'
     dd = []
     for index, row in plan.iterrows():
         dd.append(format_er.format(index,row['date'].date(),row['take'],row['num'],row['repay'],
         row['repaytype'],row['oid'],row['cid']))
     dd = '\n'.join(dd)
-    print(dd)
-    print(a)
+    print(dd);print(a)
     print('=' * 20)
     save_plan(dd)
-    tp = input('要快速还款吗?(y/n)')
+    tp = input('要快速还款吗(第一条)?(y/n)')
     if tp == 'y':
-        pid = input('哪一条计划?')
+        # pid = input('哪一条计划?')
+        pid = 0
         quick_repay(uid,plan.iloc[int(pid)])
 
 
-def save_plan(dd):
-    import os
-    if not os.path.exists('log'):
-        os.mkdir('log')
-    with open('log/CashOutPlan.txt','w') as f:
-        f.write(dd)
+def cal_debt_current(uid):
+    pad = CardPad()
+    init_pad(pad, uid)
+    d = pad.get_total_debt_list()
+    print('=' * 20)
+    if d is None:
+        print('=' * 20 + '没有数据')
+        return
+    d = '\n'.join(map(lambda x: '{}:{} 要还 {:.0f}'.format(*x),d))
+    print(d)
+    print('=' * 20)
 
 
 def show_plan(uid):
-    dt_start = '2018-01-01'
-    dt_end = '2018-12-31'
+    days = 365
     pad = CardPad()
     init_pad(pad, uid)
-    plan,a = cal_plan(pad, dt_start, dt_end)
-    print('=' * 20)
-    if not len(plan):
-        print('=' * 20 + '\n没有数据')
-        return
+    plan,a = cal_plan(pad,days)
     print_plan(uid,plan,a)

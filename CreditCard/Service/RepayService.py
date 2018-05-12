@@ -67,7 +67,7 @@ def quick_repay(uid,rc):
         print('添加成功!')
     elif rc['repaytype'] == 2:
         #工资还卡
-        iid = rc['oid']
+        iid = int(rc['oid'])
         IncomeDao.add_incomego(uid, iid, t, num)
         RepayDao.add_repay(uid, in_cid, t, num)
         print('添加成功!')

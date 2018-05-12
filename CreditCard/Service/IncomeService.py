@@ -41,3 +41,26 @@ def delete_one_income(uid):
         return
     IncomeDAO.delete_income(iid)
     print('删除成功!')
+
+
+def incomego_list(uid):
+    print('='*20)
+    ll = []
+    for v in IncomeDAO.find_incomego(uid):
+        print('{0}: {2}: {1}: {2:.0f}'.format(*v))
+        ll.append(v[0])
+    print('='*20)
+    return ll
+
+
+def delete_one_incomego(uid):
+    ll = incomego_list(uid)
+    if not len(ll):
+        print('没有数据')
+        return
+    iid = input('哪条?')
+    if not iid.isdigit() or int(iid) not in ll:
+        print('输入错误')
+        return
+    IncomeDAO.delete_incomego(iid)
+    print('删除成功!')

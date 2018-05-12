@@ -24,6 +24,24 @@ class Pad:
             return c
         raise Exception('No card\'s id is %s' % n)
 
+    def get_first_date(self):
+        ll = []
+        for c in self.pool:
+            n = c.get_first_debt_date()
+            if n is None:
+                continue
+            ll.append(n)
+        if ll == []:
+            return
+        return min(ll)
+
+    def get_total_debt_list(self):
+        s = []
+        for c in self.pool:
+            s.extend([(k,c.name,v) for k,v in c.debt_list.items()])
+        s.sort(key=lambda x:x[0])
+        return s
+
     def get_total_fee(self):
         return self.fee
 
@@ -45,6 +63,7 @@ class Pad:
             self.income.append(list(v))
             self.income.sort(key=lambda x:x[0])
 
+
     def consume(self, t, i):
         if not len(self.income):
             return
@@ -53,11 +72,11 @@ class Pad:
             if self.income[0][2] > i:
                 print('%s: %s use %.0f'%(self.income[0][0],self.income[0][1],i))
                 self.income[0][2] -= i
-                ll.append(self.income[0][1])
+                ll.append((self.income[0][1],self.income[0][2]))
                 break
             else:
                 print('%s: %s use %.0f, clear!'%tuple(self.income[0]))
-                ll.append(self.income[0][1])
+                ll.append((self.income[0][1],self.income[0][2]))
                 i -= self.income[0][2]
                 self.income = self.income[1:]
                 if not len(self.income):

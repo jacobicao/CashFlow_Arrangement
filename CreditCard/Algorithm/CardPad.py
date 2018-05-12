@@ -22,7 +22,7 @@ class CardPad(Pad):
         if cn == '工资' and len(ll):
             inc = 2
             for v in ll:
-                self.plan.append((t, cn, p, c.get_name(),inc,v,c.cid))
+                self.plan.append((t, cn, v[1], c.get_name(),inc,v[0],c.cid))
         else:
             self.plan.append((t, cn, p, c.get_name(),inc,oid,c.cid))
         c.repay(a)
