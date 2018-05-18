@@ -70,12 +70,10 @@ class Pad:
         ll = []
         while self.income[0][0]<=t and i>0:
             if self.income[0][2] > i:
-                print('%s: %s use %.0f'%(self.income[0][0],self.income[0][1],i))
                 self.income[0][2] -= i
-                ll.append((self.income[0][1],self.income[0][2]))
+                ll.append((self.income[0][1],i))
                 break
             else:
-                print('%s: %s use %.0f, clear!'%tuple(self.income[0]))
                 ll.append((self.income[0][1],self.income[0][2]))
                 i -= self.income[0][2]
                 self.income = self.income[1:]

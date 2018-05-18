@@ -8,7 +8,7 @@ def income_list(uid):
     ll = []
     for v in IncomeDAO.find_income(uid):
         print('{0}: {1}: {2:.0f}'.format(*v))
-        ll.append(v[2])
+        ll.append(v[0])
     print('='*20)
     return ll
 

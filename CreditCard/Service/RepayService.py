@@ -53,6 +53,7 @@ def delete_one_repay(uid):
     RepayDao.delete_repay(uid, int(rid))
     print('删除成功!')
 
+
 #TODO: 考虑事务
 def quick_repay(uid,rc):
     in_cid = str(rc['cid'])

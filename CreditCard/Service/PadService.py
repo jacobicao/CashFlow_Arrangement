@@ -1,6 +1,7 @@
 from Algorithm.CardPad import CardPad
 from Algorithm.CreditCard import CreditCard
 from Service.RepayService import quick_repay
+from functools import reduce
 import DAO.DebtDao as DebtDao
 import DAO.CardDao as CardDao
 import DAO.RepayDao as RepayDao
@@ -51,16 +52,16 @@ def print_plan(uid,plan,a):
     if not len(plan):
         print('=' * 20 + '\n没有数据')
         return
-    format_er = '{}: {}: {:>6} - {:>6.0f} -> {:>6}|{},{},{}'
+    format_er = '{}: {:>6} - {:>6.0f} -> {:>6}'
     dd = []
     for index, row in plan.iterrows():
-        dd.append(format_er.format(index,row['date'].date(),row['take'],row['num'],row['repay'],
-        row['repaytype'],row['oid'],row['cid']))
+        dd.append(format_er.format(row['date'].date(),
+        row['take'],row['num'],row['repay']))
     dd = '\n'.join(dd)
     print(dd);print(a)
     print('=' * 20)
     save_plan(dd)
-    tp = input('要快速还款吗(第一条)?(y/n)')
+    tp = input('已执行第一条?(y/n)')
     if tp == 'y':
         # pid = input('哪一条计划?')
         pid = 0
@@ -75,9 +76,11 @@ def cal_debt_current(uid):
     if d is None:
         print('=' * 20 + '没有数据')
         return
-    d = '\n'.join(map(lambda x: '{}:{} 要还 {:.0f}'.format(*x),d))
-    print(d)
+    s = sum(map(lambda x:x[2],d))
+    tab = '\n'.join(map(lambda x: '{}: {} 还 {:.0f}'.format(*x),d))
+    print(tab)
     print('=' * 20)
+    print('共%.0f元'%s)
 
 
 def show_plan(uid):
