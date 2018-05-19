@@ -2,12 +2,9 @@
 # encoding: utf-8
 """
 需求列表：
-1. 小额贷也纳入卡包
-2. 可能的话应该尽量迟还
-3. 出UI，使得可以确认还款或输入记录
-4. 独立出定时还款类目
-5. 后台数据改数据库存储
-6. 保留历史记录
+1. 小额贷也纳入卡包，然后考虑贷款利息
+2. 可能的话应该尽量迟还，要智能
+3. 分view层
 """
 import datetime as dt
 import pandas.tseries.offsets as pto
@@ -34,7 +31,7 @@ def cal_repay_date(d, state, repay):
 
 
 class CreditCard:
-    def __init__(self, sub, cid, name, d1, d2, limit):
+    def __init__(self, sub, cid, name, d1, d2, limit, ct = 1):
         if d1 > 28:
             raise Exception('The statement date must less than 29!')
         self.statement_date = d1
@@ -47,6 +44,7 @@ class CreditCard:
         self.debt = 0
         self.debt_list = {}
         self.load = False
+        self.ct = ct
         self.sub = sub
         self.sub.attach(self)
 
@@ -54,6 +52,8 @@ class CreditCard:
         return 'Card %s: %5.2f' % (self.name, self.debt)
 
     def should_cash_out(self, d):
+        if self.ct == 0:
+            return False
         if self.debt >= self.limit * 0.8:
             return False
         d1 = d.replace(day=self.statement_date)

@@ -21,7 +21,11 @@ def save_plan(plan):
 def init_pad(pad, uid):
     for v in CardDao.find_card(uid):
         CreditCard(pad, v[0], v[1], int(v[2]), int(v[3]), int(v[4]))
+    for v in CardDao.find_load_account(uid):
+        CreditCard(pad, v[0], v[1], int(v[2]), int(v[3]), int(v[4]),0)
     for v in DebtDao.find_debt(uid):
+        pad.get_card(v[0]).consume(v[2], int(v[3]))
+    for v in DebtDao.find_load(uid):
         pad.get_card(v[0]).consume(v[2], int(v[3]))
     for v in RepayDao.find_repay(uid):
         pad.get_card(v[0]).repay(int(v[3]))
@@ -77,14 +81,14 @@ def cal_debt_current(uid):
         print('=' * 20 + '没有数据')
         return
     s = sum(map(lambda x:x[2],d))
-    tab = '\n'.join(map(lambda x: '{}: {} 还 {:.0f}'.format(*x),d))
+    tab = '\n'.join(map(lambda x: '{}: {} 需还款 {:.0f}'.format(*x),d))
     print(tab)
     print('=' * 20)
     print('共%.0f元'%s)
 
 
 def show_plan(uid):
-    days = 365
+    days = 224
     pad = CardPad()
     init_pad(pad, uid)
     plan,a = cal_plan(pad,days)

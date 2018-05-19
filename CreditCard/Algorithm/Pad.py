@@ -22,7 +22,7 @@ class Pad:
             if not c.cid == cid:
                 continue
             return c
-        raise Exception('No card\'s id is %s' % n)
+        raise Exception('No card\'s id is %s' % cid)
 
     def get_first_date(self):
         ll = []
@@ -48,7 +48,7 @@ class Pad:
     def get_total_debt(self):
         s = 0
         for c in self.pool:
-            if c.name == "房贷":
+            if c.ct == 0:
                 continue
             s += c.debt
         return s

@@ -20,6 +20,9 @@ record_program = {'1': show_plan,
                   '12': add_one_repay,
                   '13': delete_one_repay,
                   '14': cal_debt_current,
+                  '15': load_list,
+                  '16': add_loan,
+                  '17': delete_load,
                   }
 record_word = '\n' \
               '(1)查看计划\n'         \
@@ -36,6 +39,9 @@ record_word = '\n' \
               '(12)增加一条还款记录\n' \
               '(13)删除一条还款记录\n' \
               '(14)查看当前账单列表\n' \
+              '(15)查看贷款记录\n'    \
+              '(16)增加贷款记录\n'    \
+              '(17)删除贷款记录\n'    \
               '(e)退出\n'            \
               '请输入:'
 

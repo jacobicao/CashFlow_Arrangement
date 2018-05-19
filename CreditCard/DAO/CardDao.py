@@ -21,6 +21,14 @@ def delete_card(c):
 def find_card(u):
     session = DBSession()
     query = session.query(Card.cid, Card.name, Card.A_day, Card.P_day, Card.num)
-    re = query.filter(Card.uid == u, Card.on_use == 1).all()
+    re = query.filter(Card.uid == u, Card.on_use == 1, Card.ct == 1).all()
+    session.close()
+    return re
+
+
+def find_load_account(u):
+    session = DBSession()
+    query = session.query(Card.cid, Card.name, Card.A_day, Card.P_day, Card.num)
+    re = query.filter(Card.uid == u, Card.on_use == 1, Card.ct == 0).all()
     session.close()
     return re

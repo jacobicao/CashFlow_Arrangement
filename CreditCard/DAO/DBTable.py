@@ -19,6 +19,7 @@ class Card(BaseModel):
     P_day = Column(Integer)
     num = Column(Float)
     on_use = Column(Integer,default=1)
+    ct = Column(Integer,default=1)
 
 
 class Debt(BaseModel):
