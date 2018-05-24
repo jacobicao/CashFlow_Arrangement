@@ -17,12 +17,13 @@ record_program = {'1': show_plan,
                   '9': add_one_income,
                   '10': delete_one_income,
                   '11': delete_one_incomego,
-                  '12': add_one_repay,
-                  '13': delete_one_repay,
-                  '14': cal_debt_current,
-                  '15': load_list,
-                  '16': add_loan,
-                  '17': delete_load,
+                  '12': repay_list,
+                  '13': add_one_repay,
+                  '14': delete_one_repay,
+                  '15': cal_debt_current,
+                  '16': load_list,
+                  '17': add_loan,
+                  '18': delete_load,
                   }
 record_word = '\n' \
               '(1)查看计划\n'         \
@@ -36,12 +37,13 @@ record_word = '\n' \
               '(9)增加一条收入\n'     \
               '(10)删除一条收入\n'    \
               '(11)删除一条支出\n'    \
-              '(12)增加一条还款记录\n' \
-              '(13)删除一条还款记录\n' \
-              '(14)查看当前账单列表\n' \
-              '(15)查看贷款记录\n'    \
-              '(16)增加贷款记录\n'    \
-              '(17)删除贷款记录\n'    \
+              '(12)查看所有还款记录\n' \
+              '(13)增加一条还款记录\n' \
+              '(14)删除一条还款记录\n' \
+              '(15)查看当前账单列表\n' \
+              '(16)查看贷款记录\n'    \
+              '(17)增加贷款记录\n'    \
+              '(18)删除贷款记录\n'    \
               '(e)退出\n'            \
               '请输入:'
 

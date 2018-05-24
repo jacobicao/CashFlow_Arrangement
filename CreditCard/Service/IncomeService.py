@@ -7,7 +7,7 @@ def income_list(uid):
     print('='*20)
     ll = []
     for v in IncomeDAO.find_income(uid):
-        print('{0}: {1}: {2:.0f}'.format(*v))
+        print('{0:2d}: {1}: {2:.0f}'.format(*v))
         ll.append(v[0])
     print('='*20)
     return ll
@@ -47,7 +47,7 @@ def incomego_list(uid):
     print('='*20)
     ll = []
     for v in IncomeDAO.find_incomego(uid):
-        print('{0}: {2}: {1}: {2:.0f}'.format(*v))
+        print('{0:2d}: {2}: {1}: {2:.0f}'.format(*v))
         ll.append(v[0])
     print('='*20)
     return ll

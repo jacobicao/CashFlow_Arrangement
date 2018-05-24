@@ -21,7 +21,7 @@ def delete_income(i):
 def find_income(u):
     session = DBSession()
     query = session.query(Income.iid, Income.P_time, Income.num)
-    re = query.filter(Income.uid == u).all()
+    re = query.filter(Income.uid == u).order_by(Income.P_time).all()
     session.close()
     return re
 
@@ -44,7 +44,7 @@ def delete_incomego(g):
 def find_incomego(u):
     session = DBSession()
     query = session.query(Incomego.gid, Incomego.iid, Incomego.P_time, Incomego.num)
-    re = query.filter(Incomego.uid == u).all()
+    re = query.filter(Incomego.uid == u).order_by(Incomego.P_time).all()
     session.close()
     return re
 
@@ -52,6 +52,6 @@ def find_incomego_sum(u):
     session = DBSession()
     query = session.query(Income.P_time, Income.iid,
             (Income.num - func.coalesce(func.sum(Incomego.num),0)).label('num'))
-    re = query.outerjoin(Incomego).group_by(Income.iid).all()
+    re = query.outerjoin(Incomego).group_by(Income.iid).order_by(Income.P_time).all()
     session.close()
     return re
