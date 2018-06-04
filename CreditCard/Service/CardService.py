@@ -4,14 +4,14 @@ from Algorithm.util import is_float, is_days
 # 卡类
 def card_list(uid):
     ll = []
-    # print('=' * 20)
+    print('=' * 20)
     for v in CardDao.find_card(uid):
-        # print('%2d:%6s' % (v[0], v[1]))
+        print('%2d:%6s a:%2d p:%2d e:%5d' % (v[0], v[1], v[2], v[3], v[4]))
         cl = {}
         cl['cid'] = v[0]
         cl['name'] = v[1]
         ll.append(cl)
-    # print('=' * 20)
+    print('=' * 20)
     return ll
 
 def load_account_list(uid):
@@ -52,7 +52,7 @@ def delete_one_card(uid):
         print('没有卡片')
         return
     cid = input('哪张卡?')
-    if not cid.isdigit() or int(cid) not in ll:
+    if not cid.isdigit(): #or int(cid) not in ll:
         print('输入错误')
         return
     CardDao.delete_card(cid)

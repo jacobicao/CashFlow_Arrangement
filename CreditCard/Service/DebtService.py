@@ -11,7 +11,7 @@ def debt_list(uid):
     print('=' * 20)
     for v in DebtDao.find_debt(uid):
         a+=v[3]
-        print('%2d:%s: %s 消费 %5d' % (v[2], v[4], v[1], v[3]))
+        print('%2d:%s: %s 消费 %5d' % (v[4], v[2], v[1], v[3]))
         ll.append(v[4])
     print('=' * 20)
     if len(ll):
