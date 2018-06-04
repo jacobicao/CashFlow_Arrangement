@@ -4,11 +4,14 @@ from Algorithm.util import is_float, is_days
 # 卡类
 def card_list(uid):
     ll = []
-    print('=' * 20)
+    # print('=' * 20)
     for v in CardDao.find_card(uid):
-        print('%2d:%6s' % (v[0], v[1]))
-        ll.append(v[0])
-    print('=' * 20)
+        # print('%2d:%6s' % (v[0], v[1]))
+        cl = {}
+        cl['cid'] = v[0]
+        cl['name'] = v[1]
+        ll.append(cl)
+    # print('=' * 20)
     return ll
 
 def load_account_list(uid):

@@ -54,7 +54,7 @@ def print_plan(uid,plan,a):
     if not len(plan):
         print('=' * 20 + '\n没有数据')
         return
-    format_er = '{}: {:4s} - {:6.0f} + {:3.0f} -> {:4s}'
+    format_er = '{}: {:4s} -> {:6.0f} + {:3.0f} -> {:4s}'
     dd = []
     for index, row in plan.iterrows():
         dd.append(format_er.format(row['date'].date(),
