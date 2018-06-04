@@ -34,12 +34,19 @@ class CardPad(Pad):
         income = self.get_income(t)
         if income > 0 and self.transform_debt(t, self, '工资', income, c):
             return True
+        readylist = []
         for cc in self.pool:
             if cc.name == c.name:
                 continue
-            if not cc.should_cash_out(t):
-                continue
-            if self.transform_debt(t, cc, cc.name, cc.limit * 0.9 - cc.debt, c):
+            if cc.should_cash_out(t):
+                l = cc.limit * 0.9 - cc.debt
+                readylist.append((cc.cid,cc.days_betw_next_repay(t),l))
+        if len(readylist) == 0:
+            return False
+        sorted(readylist,key=lambda x: x[1],reverse=True)
+        for cid in readylist:
+            cc = self.get_card(cid[0])
+            if self.transform_debt(t, cc, cc.name, cid[2], c):
                 return True
         return False
 

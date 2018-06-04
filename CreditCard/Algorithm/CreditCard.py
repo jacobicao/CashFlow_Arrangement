@@ -10,9 +10,9 @@ import datetime as dt
 import pandas.tseries.offsets as pto
 
 # permit cash out on D days after statement date
-D = 5
+D = 15
 # permit repay on C days before repayment date
-C = 3
+C = 1
 # constance
 DayO = dt.timedelta(days=0)
 Day4 = dt.timedelta(days=D)
@@ -61,6 +61,10 @@ class CreditCard:
         bre1 = DayO < d - d1 < Day4
         bre2 = DayO < d - d2 < Day4
         return bre1 or bre2
+
+    def days_betw_next_repay(self,d):
+        next_repay_date = cal_repay_date(d, self.statement_date, self.repay_date)
+        return (next_repay_date-d).days
 
     def is_over_date(self, d):
         dd = min(self.debt_list.keys())
