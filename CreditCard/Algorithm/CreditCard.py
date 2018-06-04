@@ -44,7 +44,7 @@ class CreditCard:
         self.debt = 0
         self.debt_list = {}
         self.load = False
-        self.ct = ct
+        self.ct = ct  # card type
         self.sub = sub
         self.sub.attach(self)
 
@@ -117,6 +117,6 @@ class CreditCard:
 
     def get_name(self):
         if self.load:
-            return '现金贷'
+            return '网贷'
         else:
             return self.name

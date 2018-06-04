@@ -1,7 +1,6 @@
-from Algorithm.CardPad import CardPad
+from Algorithm.CardPad import CardPad, pdcol
 from Algorithm.CreditCard import CreditCard
 from Service.RepayService import quick_repay
-from functools import reduce
 import DAO.DebtDao as DebtDao
 import DAO.CardDao as CardDao
 import DAO.RepayDao as RepayDao
@@ -44,8 +43,7 @@ def cal_plan(pad,days):
         pad.check_repay(t)
     a = '\n%s: 当前信用卡负债还有 %.f' % (t, pad.get_total_debt())
     a += ('\n%s: 区间总手续费达 %.f\n' % (t, pad.get_total_fee()))
-    col = ['date', 'take', 'num', 'repay','repaytype','oid','cid']
-    plan = pd.DataFrame(pad.plan, columns=col)
+    plan = pd.DataFrame(pad.plan, columns=pdcol)
     plan.date = pd.to_datetime(plan.date)
     return plan,a
 
@@ -56,11 +54,11 @@ def print_plan(uid,plan,a):
     if not len(plan):
         print('=' * 20 + '\n没有数据')
         return
-    format_er = '{}: {:>6} - {:>6.0f} -> {:>6}'
+    format_er = '{}: {:4s} -> {:6.0f} + {:3.0f} -> {:4s}'
     dd = []
     for index, row in plan.iterrows():
         dd.append(format_er.format(row['date'].date(),
-        row['take'],row['num'],row['repay']))
+        row['take'],row['num'],row['fee'],row['repay']))
     dd = '\n'.join(dd)
     print(dd);print(a)
     print('=' * 20)
@@ -88,7 +86,7 @@ def cal_debt_current(uid):
 
 
 def show_plan(uid):
-    days = 224
+    days = 219
     pad = CardPad()
     init_pad(pad, uid)
     plan,a = cal_plan(pad,days)
