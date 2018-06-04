@@ -50,24 +50,33 @@ def cal_plan(pad,days):
 
 # view
 def print_plan(uid,plan,a):
-    print('=' * 20)
+    # print('=' * 20)
     if not len(plan):
-        print('=' * 20 + '\n没有数据')
-        return
-    format_er = '{}: {:4s} -> {:6.0f} + {:3.0f} -> {:4s}'
-    dd = []
+        # print('=' * 20 + '\n没有数据')
+        return {}
+    # format_er = '{}: {:4s} -> {:6.0f} + {:3.0f} -> {:4s}'
+    # dd = []
+    res = []
     for index, row in plan.iterrows():
-        dd.append(format_er.format(row['date'].date(),
-        row['take'],row['num'],row['fee'],row['repay']))
-    dd = '\n'.join(dd)
-    print(dd);print(a)
-    print('=' * 20)
-    save_plan(dd)
-    tp = input('已执行第一条?(y/n)')
-    if tp == 'y':
-        # pid = input('哪一条计划?')
-        pid = 0
-        quick_repay(uid,plan.iloc[int(pid)])
+        # dd.append(format_er.format(row['date'].date(),
+        # row['take'],row['num'],row['fee'],row['repay']))
+        ll = {}
+        ll['date'] = row['date'].date().strftime('%Y-%m-%d')
+        ll['name_out'] = row['take']
+        ll['num'] = round(row['num'],0)
+        ll['fee'] = round(row['fee'],0)
+        ll['name_in'] = row['repay']
+        res.append(ll)
+    # dd = '\n'.join(dd)
+    # print(dd);print(a)
+    # print('=' * 20)
+    # save_plan(dd)
+    # tp = input('已执行第一条?(y/n)')
+    # if tp == 'y':
+    #     # pid = input('哪一条计划?')
+    #     pid = 0
+    #     quick_repay(uid,plan.iloc[int(pid)])
+    return res
 
 
 def cal_debt_current(uid):
@@ -90,4 +99,5 @@ def show_plan(uid):
     pad = CardPad()
     init_pad(pad, uid)
     plan,a = cal_plan(pad,days)
-    print_plan(uid,plan,a)
+    res = print_plan(uid,plan,a)
+    return res

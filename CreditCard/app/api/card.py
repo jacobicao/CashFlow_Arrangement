@@ -9,7 +9,14 @@ def get_card_list(id):
     return jsonify(cardlist)
 
 
-@api.route('/plan/<int:id>',methods=['POST'])
+@api.route('/user/<int:id>/plan')
+def show_debt_plan(id):
+    return jsonify(Controller.show_plan(id))
+
+
+
+
+@api.route('/user/<int:id>/addcard',methods=['POST'])
 def show_plan(id):
     b = json.loads(str(request.get_data(), encoding = "utf-8"))
     user = {
