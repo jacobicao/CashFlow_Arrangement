@@ -12,8 +12,22 @@ def api_GetDebtList(id):
 @api.route('/user/<int:id>/adddebt',methods=['POST'])
 def api_AddDebt(id):
     b = json.loads(str(request.get_data(), encoding = "utf-8"))
-    res = {
-        'uid':id,
-        'msg':b
-        }
+    s = b.get('cid')
+    n = b.get('num')
+    d = b.get('date')
+    if not all([s,n,d]):
+        res = {'err': 1, 'msg': '参数不完整'}
+        return jsonify(res)
+    res = Controller.add_one_debt(id,s,n,d)
+    return jsonify(res)
+
+
+@api.route('/user/<int:id>/deldebt',methods=['POST'])
+def api_DelDebt(id):
+    b = json.loads(str(request.get_data(), encoding = "utf-8"))
+    did = b.get('did')
+    if not did:
+        res = {'err': 1, 'msg': '参数不完整'}
+        return jsonify(res)
+    res = Controller.delete_one_debt(id,did)
     return jsonify(res)

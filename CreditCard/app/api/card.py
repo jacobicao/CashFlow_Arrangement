@@ -23,3 +23,14 @@ def api_AddCard(id):
         return jsonify(res)
     res = Controller.add_one_card(id,s,a,p,n,c)
     return jsonify(res)
+
+
+@api.route('/user/<int:id>/delcard',methods=['POST'])
+def api_DelCard(id):
+    b = json.loads(str(request.get_data(), encoding = "utf-8"))
+    cid = b.get('cid')
+    if not cid:
+        res = {'err': 1, 'msg': '参数不完整'}
+        return jsonify(res)
+    res = Controller.delete_one_card(id,cid)
+    return jsonify(res)

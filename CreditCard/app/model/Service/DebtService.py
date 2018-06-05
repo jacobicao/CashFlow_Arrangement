@@ -33,39 +33,30 @@ def load_list(uid):
     return ll
 
 
-def add_one_debt(uid):
-    ll = card_list(uid)
-    if len(ll)==0:
-        print('当前没有卡片，请先添加卡片.')
-        return
-    cid = input('哪张卡?')
-    if not cid.isdigit() or int(cid) not in ll:
-        print('输入错误')
-        return
-    num = input('刷了多少?')
+def add_one_debt(uid,cid,num,t):
+    if not str(cid).isdigit():
+        return {'msg':'输入错误','err':1}
     if not is_float(num):
-        print('输入错误')
-        return
-    t = input('什么时候(YYYY-MM-DD)?')
+        return {'msg':'输入错误','err':1}
     try:
         DebtDao.add_debt(uid, cid, dt.datetime.strptime(t,'%Y-%m-%d'), num)
     except Exception as e:
-        print('输入错误:', e)
+        res = {'msg':'输入错误:' + str(e),'err':1}
     else:
-        print('添加成功!')
+        res = {'msg':'添加成功','err':0}
+    return res
 
 
-def delete_one_debt(uid):
-    ll = debt_list(uid)
-    if len(ll) == 0:
-        print('没有记录')
-        return
-    did = input('哪一条?')
-    if not did.isdigit() or int(did) not in ll:
-        print('输入错误')
-        return
-    DebtDao.delete_debt(uid, int(did))
-    print('删除成功!')
+def delete_one_debt(uid,did):
+    if not str(did).isdigit():
+        return {'err':1,'msg':'id 不存在'}
+    try:
+        DebtDao.delete_debt(uid, int(did))
+    except Exception as e:
+        res = {'msg':'输入错误:' + str(e),'err':1}
+    else:
+        res = {'msg':'删除成功:','err':0}
+    return res
 
 
 def add_loan(uid):
