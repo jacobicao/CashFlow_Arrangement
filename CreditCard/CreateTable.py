@@ -1,2 +1,2 @@
-import DAO.DBTable as t
+import app.model.DAO.DBTable as t
 t.init_db()
