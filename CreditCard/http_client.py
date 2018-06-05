@@ -1,7 +1,7 @@
 import requests
 import json
 
-url = 'http://127.0.0.1:5000'
+url_base = 'http://127.0.0.1:5000'
 
 def get_data():
     h = {
@@ -77,4 +77,42 @@ def del_card():
         )
     print(r.json())
 
-del_card()
+
+def add_repay():
+    u = {
+        'cid':'111',
+        'num':28888,
+        'date':'2018-6-6',
+        }
+    h = {
+        'content-type':'application/json',
+        }
+    url = url_base + '/api/v1/user/1/addrepay'
+    r = requests.post('http://127.0.0.1:5000/api/v1/user/1/addrepay',
+        data=json.dumps(u),
+        headers=h
+        )
+    print(r.json())
+
+
+def del_repay():
+    u = {
+        'rid':'7',
+        }
+    h = {
+        'content-type':'application/json',
+        }
+    url = url_base + '/api/v1/user/1/delrepay'
+    r = requests.post(url,
+        data=json.dumps(u),
+        headers=h
+        )
+    print(r.json())
+
+
+def get_repay():
+    url = url_base+'/api/v1/user/1/repays'
+    r = requests.get(url)
+    print(r.json())
+
+del_repay()

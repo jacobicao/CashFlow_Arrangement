@@ -3,55 +3,50 @@ import app.model.DAO.RepayDao as RepayDao
 import app.model.DAO.DebtDao as DebtDao
 import app.model.DAO.IncomeDao as IncomeDao
 from app.model.Service.CardService import card_list
-from app.model.Algorithm.util import is_float
+from app.model.Algorithm.util import is_float, is_date
 
 
 def repay_list(uid):
     ll = []
-    a = 0
-    print('=' * 20)
     for v in RepayDao.find_repay(uid):
         if v[1] == '房贷':
             continue
-        print('%2d: %s: %s 还款 %5d ' % (v[4], v[2], v[1], v[3]))
-        ll.append(v[4])
-    print('=' * 20)
+        cl = {}
+        cl['cid'] = v[0]
+        cl['name'] = v[1]
+        cl['date'] = v[2]
+        cl['num'] = v[3]
+        cl['rid'] = v[4]
+        ll.append(cl)
     return ll
 
 
-def add_one_repay(uid):
-    ll = card_list(uid)
-    if len(ll)==0:
-        print('当前没有卡片，请先添加卡片.')
-        return
-    cid = input('哪张卡?')
-    if not cid.isdigit() or int(cid) not in ll:
-        print('输入错误')
-        return
-    num = input('还了多少?')
+def add_one_repay(uid,cid,num,t):
+    if not str(cid).isdigit():
+        return {'msg':'id不存在','err':1}
     if not is_float(num):
-        print('输入错误')
-        return
-    t = input('什么时候(YYYY-MM-DD)?')
+        return {'msg':'数量错误','err':1}
+    if not is_date(t):
+        return {'msg':'日期错误','err':1}
     try:
         RepayDao.add_repay(uid, cid, dt.datetime.strptime(t,'%Y-%m-%d'), num)
     except Exception as e:
-        print('输入错误:', e)
+        res = {'msg':'输入错误:' + str(e),'err':1}
     else:
-        print('添加成功!')
+        res = {'msg':'添加成功','err':0}
+    return res
 
 
-def delete_one_repay(uid):
-    ll = repay_list(uid)
-    if len(ll) == 0:
-        print('没有记录')
-        return
-    rid = input('哪一条?')
-    if not rid.isdigit() or int(rid) not in ll:
-        print('输入错误')
-        return
-    RepayDao.delete_repay(uid, int(rid))
-    print('删除成功!')
+def delete_one_repay(uid,rid):
+    if not str(rid).isdigit():
+        return {'msg':'id不存在','err':1}
+    try:
+        RepayDao.delete_repay(uid, int(rid))
+    except Exception as e:
+        res = {'msg':'输入错误:' + str(e),'err':1}
+    else:
+        res = {'msg':'删除成功','err':0}
+    return res
 
 
 #TODO: 考虑事务
@@ -63,15 +58,14 @@ def quick_repay(uid,rc):
         #卡还卡
         out_cid = str(rc['oid'])
         rl = round(num*1.006,2)
-        DebtDao.add_debt(uid, out_cid, t, rl)
+        DebtDao.add_debt(uid, out_cid, t, num)# 临时改为 num
         RepayDao.add_repay(uid, in_cid, t, num)
-        print('添加成功!')
+        return {'msg':'添加成功','err':0}
     elif rc['repaytype'] == 2:
         #工资还卡
         iid = int(rc['oid'])
         IncomeDao.add_incomego(uid, iid, t, num)
         RepayDao.add_repay(uid, in_cid, t, num)
-        print('添加成功!')
+        return {'msg':'添加成功','err':0}
     else:
-        print('该类型还款方式暂未实现')
-        return
+        return {'msg':'该类型还款方式暂未实现','err':1}
