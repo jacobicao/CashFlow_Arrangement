@@ -1,19 +1,19 @@
 import datetime as dt
-import DAO.DebtDao as DebtDao
 import pandas as pd
-from Service.CardService import card_list, load_account_list
-from Algorithm.util import is_float
+import app.model.DAO.DebtDao as DebtDao
+from app.model.Service.CardService import card_list, load_account_list
+from app.model.Algorithm.util import is_float
 
 
 def debt_list(uid):
     ll = []
     a = 0
-    print('=' * 20)
+    # print('=' * 20)
     for v in DebtDao.find_debt(uid):
         a+=v[3]
-        print('%2d:%s: %s 消费 %5d' % (v[4], v[2], v[1], v[3]))
+        # print('%2d:%s: %s 消费 %5d' % (v[4], v[2], v[1], v[3]))
         ll.append(v[4])
-    print('=' * 20)
+    # print('=' * 20)
     if len(ll):
         print('共: %6d'%a)
     return ll

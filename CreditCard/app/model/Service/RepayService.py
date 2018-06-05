@@ -1,9 +1,9 @@
 import datetime as dt
-import DAO.RepayDao as RepayDao
-import DAO.DebtDao as DebtDao
-import DAO.IncomeDao as IncomeDao
-from Service.CardService import card_list
-from Algorithm.util import is_float
+import app.model.DAO.RepayDao as RepayDao
+import app.model.DAO.DebtDao as DebtDao
+import app.model.DAO.IncomeDao as IncomeDao
+from app.model.Service.CardService import card_list
+from app.model.Algorithm.util import is_float
 
 
 def repay_list(uid):
@@ -62,9 +62,9 @@ def quick_repay(uid,rc):
     if rc['repaytype'] == 1:
         #卡还卡
         out_cid = str(rc['oid'])
-        rl = round(num/1.006,2)
-        DebtDao.add_debt(uid, out_cid, t, num)
-        RepayDao.add_repay(uid, in_cid, t, rl)
+        rl = round(num*1.006,2)
+        DebtDao.add_debt(uid, out_cid, t, rl)
+        RepayDao.add_repay(uid, in_cid, t, num)
         print('添加成功!')
     elif rc['repaytype'] == 2:
         #工资还卡

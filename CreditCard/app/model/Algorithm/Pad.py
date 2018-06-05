@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf-8
 import datetime as dt
-from Algorithm.util import find_income
+from .util import find_income
 
 class Pad:
     def __init__(self):

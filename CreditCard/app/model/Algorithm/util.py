@@ -8,7 +8,7 @@ def is_float(s):
     return True
 
 def is_days(s):
-    if not s.isdigit() or int(s)>30 or int(s)<1:
+    if not str(s).isdigit() or int(s)>30 or int(s)<1:
         return False
     return True
 

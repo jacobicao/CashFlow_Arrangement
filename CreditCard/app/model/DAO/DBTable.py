@@ -1,4 +1,4 @@
-from DAO.DBConnect import DBSession
+from .DBConnect import DBSession
 from sqlalchemy import Integer, Column, ForeignKey, CHAR, Date, Float
 from sqlalchemy.ext.declarative import declarative_base
 BaseModel = declarative_base()

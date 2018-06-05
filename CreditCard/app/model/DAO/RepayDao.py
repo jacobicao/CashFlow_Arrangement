@@ -1,5 +1,5 @@
-from DAO.DBTable import Debt, Card, Repay
-from DAO.DBConnect import DBSession
+from .DBTable import Debt, Card, Repay
+from .DBConnect import DBSession
 
 
 def add_repay(u, c, t, n):

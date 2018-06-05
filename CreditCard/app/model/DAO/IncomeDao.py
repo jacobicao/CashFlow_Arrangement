@@ -1,6 +1,7 @@
-from DAO.DBTable import Income, Incomego, Debt
-from DAO.DBConnect import DBSession
+from .DBTable import Income, Incomego, Debt
+from .DBConnect import DBSession
 from sqlalchemy import func
+
 
 def add_income(u, t, n):
     session = DBSession()

@@ -1,16 +1,17 @@
-from Service.CardService import *
-from Service.UserService import *
-from Service.IncomeService import *
-from Service.DebtService import *
-from Service.PadService import *
-from Service.RepayService import *
+from .Service.CardService import *
+from .Service.UserService import *
+from .Service.IncomeService import *
+from .Service.DebtService import *
+from .Service.PadService import *
+from .Service.RepayService import *
 
 
-record_program = {'1': show_plan,
+record_program = {
+                  # '1': show_plan,
                   '2': debt_list,
                   '3': add_one_debt,
                   '4': delete_one_debt,
-                  '5': card_list,
+                  # '5': card_list,
                   '6': add_one_card,
                   '7': delete_one_card,
                   '8': income_list,
@@ -20,7 +21,7 @@ record_program = {'1': show_plan,
                   '12': repay_list,
                   '13': add_one_repay,
                   '14': delete_one_repay,
-                  '15': cal_debt_current,
+                  # '15': cal_debt_current,
                   '16': load_list,
                   '17': add_loan,
                   '18': delete_load,

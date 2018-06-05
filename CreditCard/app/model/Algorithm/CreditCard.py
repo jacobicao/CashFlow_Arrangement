@@ -77,11 +77,12 @@ class CreditCard:
             return False
         if self.is_over_date(d):
             return True
-        if (min(self.debt_list.keys()) - d) < dt.timedelta(days=C):
+        if (min(self.debt_list.keys()) - d) <= dt.timedelta(days=C):
             return True
         return False
 
     def consume(self, d, m):
+        # restrict the upper bound of the total consumption
         # if self.debt + m > self.limit:
         #     raise Exception('The consumption exceeds the credit card limit!')
         self.debt += m

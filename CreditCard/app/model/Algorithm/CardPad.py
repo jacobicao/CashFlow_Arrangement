@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # encoding: utf-8
-from Algorithm.Pad import Pad
+from .Pad import Pad
 import datetime as dt
 
 Day1 = dt.timedelta(days=1)

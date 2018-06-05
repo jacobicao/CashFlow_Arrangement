@@ -1,5 +1,5 @@
-from DAO.DBTable import User
-from DAO.DBConnect import DBSession
+from .DBTable import User
+from .DBConnect import DBSession
 
 
 def add_user(s):
@@ -26,4 +26,3 @@ def find_user(s):
     if uid is None:
         return 0
     return uid[0]
-

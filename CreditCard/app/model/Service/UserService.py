@@ -1,4 +1,4 @@
-import DAO.UserDao as UserDao
+import app.model.DAO.UserDao as UserDao
 
 # 用户类
 def log_on_user(s):

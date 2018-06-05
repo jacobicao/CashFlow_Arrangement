@@ -1,10 +1,10 @@
-from DAO.DBTable import Card
-from DAO.DBConnect import DBSession
+from .DBTable import Card
+from .DBConnect import DBSession
 
 
-def add_card(u, s, a, p, f):
+def add_card(u, s, a, p, f,ct):
     session = DBSession()
-    card = Card(uid=u, name=s, A_day=a, P_day=p, num=f)
+    card = Card(uid=u, name=s, A_day=a, P_day=p, num=f,ct=ct)
     session.add(card)
     session.commit()
     session.close()

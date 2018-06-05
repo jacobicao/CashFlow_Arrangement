@@ -1,10 +1,10 @@
-from Algorithm.CardPad import CardPad, pdcol
-from Algorithm.CreditCard import CreditCard
-from Service.RepayService import quick_repay
-import DAO.DebtDao as DebtDao
-import DAO.CardDao as CardDao
-import DAO.RepayDao as RepayDao
-import DAO.IncomeDao as IncomeDao
+from app.model.Algorithm.CardPad import CardPad, pdcol
+from app.model.Algorithm.CreditCard import CreditCard
+from app.model.Service.RepayService import quick_repay
+import app.model.DAO.DebtDao as DebtDao
+import app.model.DAO.CardDao as CardDao
+import app.model.DAO.RepayDao as RepayDao
+import app.model.DAO.IncomeDao as IncomeDao
 import pandas as pd
 import datetime as dt
 
@@ -54,7 +54,7 @@ def print_plan(uid,plan,a):
     if not len(plan):
         # print('=' * 20 + '\n没有数据')
         return {}
-    # format_er = '{}: {:4s} -> {:6.0f} + {:3.0f} -> {:4s}'
+    format_er = '{}: {:4s} -> {:6.0f} + {:3.0f} -> {:4s}'
     # dd = []
     res = []
     for index, row in plan.iterrows():
@@ -95,7 +95,7 @@ def cal_debt_current(uid):
 
 
 def show_plan(uid):
-    days = 219
+    days = 60
     pad = CardPad()
     init_pad(pad, uid)
     plan,a = cal_plan(pad,days)
