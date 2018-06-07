@@ -80,7 +80,7 @@ def cal_debt_current(uid):
     pad = CardPad()
     init_pad(pad, uid)
     d = pad.get_total_debt_list()
-    if d is None:
+    if not len(d):
         return {}
     ll = []
     for x in d:

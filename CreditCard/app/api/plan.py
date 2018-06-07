@@ -7,7 +7,7 @@ import app.model.MyApi as Controller
 @api.route('/user/<int:id>/debts',methods=['POST'])
 def api_GetDebtList(id):
     b = json.loads(str(request.get_data(), encoding = "utf-8"))
-    s = b.get('s')
+    s = b.get('api_key')
     if not Controller.queding(id,s):
         return jsonify({'status':2,'data':{'msg':'该用户未注册'}})
     return jsonify(Controller.cal_debt_current(id))
