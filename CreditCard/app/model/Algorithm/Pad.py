@@ -40,7 +40,7 @@ class Pad:
         for c in self.pool:
             if c.ct == 0:
                 continue
-            s.extend([(k,c.name,v) for k,v in c.debt_list.items()])
+            s.extend([(k,c.cid,c.name,v) for k,v in c.debt_list.items()])
         s.sort(key=lambda x:x[0])
         return s
 

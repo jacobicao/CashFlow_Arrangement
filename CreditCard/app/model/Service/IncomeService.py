@@ -4,63 +4,58 @@ from app.model.Algorithm.util import is_float, is_days, is_date
 
 
 def income_list(uid):
-    print('='*20)
     ll = []
     for v in IncomeDAO.find_income(uid):
-        print('{0:2d}: {1}: {2:.0f}'.format(*v))
-        ll.append(v[0])
-    print('='*20)
+        cl = {}
+        cl['iid'] = v[0]
+        cl['date'] = v[1]
+        cl['num'] = v[2]
+        ll.append(cl)
     return ll
 
 
-def add_one_income(uid):
-    n = input('月收入?')
+def add_one_income(uid,n,t):
     if not is_float(n):
-        print('输入错误')
-        return
-    t = input('到账日期(YYYY-MM-DD)?')
+        return {'msg':'id不存在','err':1}
     if not is_date(t):
-        print('输入错误')
-        return
+        return {'msg':'输入错误','err':1}
     try:
         IncomeDAO.add_income(uid, dt.datetime.strptime(t,'%Y-%m-%d'), n)
     except Exception as e:
-        print('输入错误:', e)
+        return {'msg':'输入错误:'+str(e),'err':1}
     else:
-        print('添加成功!')
+        return {'msg':'添加成功','err':0}
 
 
-def delete_one_income(uid):
-    ll = income_list(uid)
-    if not len(ll):
-        print('没有数据')
-        return
-    iid = input('哪条?')
-    if not iid.isdigit() or int(iid) not in ll:
-        print('输入错误')
-        return
-    IncomeDAO.delete_income(iid)
-    print('删除成功!')
+def delete_one_income(uid,iid):
+    if not str(iid).isdigit():
+        return {'msg':'id不存在','err':1}
+    try:
+        IncomeDAO.delete_income(iid)
+    except Exception as e:
+        return {'msg':'输入错误:'+str(e),'err':1}
+    else:
+        return {'msg':'删除成功','err':0}
 
 
 def incomego_list(uid):
-    print('='*20)
     ll = []
     for v in IncomeDAO.find_incomego(uid):
-        print('{0:2d}: {2}: {1}: {2:.0f}'.format(*v))
-        ll.append(v[0])
-    print('='*20)
+        cl = {}
+        cl['gid'] = v[0]
+        cl['iid'] = v[1]
+        cl['date'] = v[2]
+        cl['num'] = v[3]
+        ll.append(cl)
     return ll
 
 
-def delete_one_incomego(uid):
-    ll = incomego_list(uid)
-    if not len(ll):
-        print('没有数据')
-        return
-    iid = input('哪条?')
-    if not iid.isdigit() or int(iid) not in ll:
-        print('输入错误')
-        return
-    IncomeDAO.delete_incomego(iid)
-    print('删除成功!')
+def delete_one_incomego(uid,gid):
+    if not str(gid).isdigit():
+        return {'msg':'id不存在','err':1}
+    try:
+        IncomeDAO.delete_incomego(gid)
+    except Exception as e:
+        return {'msg':'输入错误:'+str(e),'err':1}
+    else:
+        return {'msg':'删除成功','err':0}

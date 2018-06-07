@@ -26,3 +26,13 @@ def find_user(s):
     if uid is None:
         return 0
     return uid[0]
+
+
+def con_user(u,s):
+    session = DBSession()
+    query = session.query(User.uid)
+    uid = query.filter(User.uid == u, User.name == s).first()
+    session.close()
+    if uid is None:
+        return False
+    return True

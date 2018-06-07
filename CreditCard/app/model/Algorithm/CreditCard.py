@@ -10,7 +10,7 @@ import datetime as dt
 import pandas.tseries.offsets as pto
 
 # permit cash out on D days after statement date
-D = 15
+D = 10
 # permit repay on C days before repayment date
 C = 1
 # constance

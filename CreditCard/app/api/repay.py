@@ -6,8 +6,7 @@ import app.model.MyApi as Controller
 
 @api.route('/user/<int:id>/repays')
 def api_GetRepayList(id):
-    repaylist = Controller.repay_list(id)
-    return jsonify(repaylist)
+    return jsonify(Controller.repay_list(id))
 
 
 @api.route('/user/<int:id>/addrepay',methods=['POST'])

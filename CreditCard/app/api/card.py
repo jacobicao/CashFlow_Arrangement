@@ -6,8 +6,7 @@ import app.model.MyApi as Controller
 
 @api.route('/user/<int:id>/cards')
 def api_GetCardList(id):
-    cardlist = Controller.card_list(id)
-    return jsonify(cardlist)
+    return jsonify(Controller.card_list(id))
 
 
 @api.route('/user/<int:id>/addcard',methods=['POST'])

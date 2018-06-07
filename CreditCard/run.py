@@ -14,8 +14,7 @@ def outer_logic(f):
 
 
 def main():
-    # outer_logic(inner_logic)
-    inner_logic(1)
+    outer_logic(inner_logic)
 
 
 if __name__ == "__main__":

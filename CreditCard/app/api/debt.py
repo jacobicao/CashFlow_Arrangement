@@ -4,6 +4,16 @@ import json
 import app.model.MyApi as Controller
 
 
+@api.route('/user/<int:id>/records')
+def api_GetRecordList(id):
+    return jsonify(Controller.debt_list(id))
+
+
+@api.route('/user/<int:id>/loans')
+def api_GetLoanList(id):
+    return jsonify(Controller.loan_list(id))
+
+
 @api.route('/user/<int:id>/adddebt',methods=['POST'])
 def api_AddDebt(id):
     b = json.loads(str(request.get_data(), encoding = "utf-8"))
@@ -25,4 +35,29 @@ def api_DelDebt(id):
         res = {'err': 1, 'msg': '参数不完整'}
         return jsonify(res)
     res = Controller.delete_one_debt(id,did)
+    return jsonify(res)
+
+
+@api.route('/user/<int:id>/addloan',methods=['POST'])
+def api_AddLoan(id):
+    b = json.loads(str(request.get_data(), encoding = "utf-8"))
+    s = b.get('cid')
+    n = b.get('num')
+    ts = b.get('begin')
+    tn = b.get('end')
+    if not all([s,n,ts,tn]):
+        res = {'err': 1, 'msg': '参数不完整'}
+        return jsonify(res)
+    res = Controller.add_loan(id,s,n,ts,tn)
+    return jsonify(res)
+
+
+@api.route('/user/<int:id>/delloan',methods=['POST'])
+def api_DelLoan(id):
+    b = json.loads(str(request.get_data(), encoding = "utf-8"))
+    cid = b.get('cid')
+    if not cid:
+        res = {'err': 1, 'msg': '参数不完整'}
+        return jsonify(res)
+    res = Controller.delete_loan(id,cid)
     return jsonify(res)

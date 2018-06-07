@@ -2,7 +2,7 @@ import datetime as dt
 import pandas as pd
 import app.model.DAO.DebtDao as DebtDao
 from app.model.Service.CardService import card_list, load_account_list
-from app.model.Algorithm.util import is_float
+from app.model.Algorithm.util import is_float, is_date
 
 
 def debt_list(uid):
@@ -18,7 +18,7 @@ def debt_list(uid):
     return ll
 
 
-def load_list(uid):
+def loan_list(uid):
     ll = []
     for v in DebtDao.find_load(uid):
         cl = {}
@@ -76,7 +76,7 @@ def add_loan(uid,cid,num,ts,en):
     return res
 
 
-def delete_load(uid,cid):
+def delete_loan(uid,cid):
     if not str(cid).isdigit():
         return {'err':1,'msg':'id 不存在'}
     try:

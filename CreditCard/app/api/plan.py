@@ -4,12 +4,19 @@ import json
 import app.model.MyApi as Controller
 
 
-@api.route('/user/<int:id>/debts')
+@api.route('/user/<int:id>/debts',methods=['POST'])
 def api_GetDebtList(id):
-    currentdebt = Controller.cal_debt_current(id)
-    return jsonify(currentdebt)
+    b = json.loads(str(request.get_data(), encoding = "utf-8"))
+    s = b.get('s')
+    if not Controller.queding(id,s):
+        return jsonify({'status':2,'data':{'msg':'该用户未注册'}})
+    return jsonify(Controller.cal_debt_current(id))
 
 
-@api.route('/user/<int:id>/plan')
+@api.route('/user/<int:id>/plan',methods=['POST'])
 def api_GetPlan(id):
+    b = json.loads(str(request.get_data(), encoding = "utf-8"))
+    s = b.get('s')
+    if not Controller.queding(id,s):
+        return jsonify({'status':2,'data':{'msg':'该用户未注册'}})
     return jsonify(Controller.show_plan(id))
