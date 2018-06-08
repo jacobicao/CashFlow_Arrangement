@@ -3,20 +3,40 @@ import json
 from requests.auth import HTTPBasicAuth
 
 url_base = 'http://127.0.0.1:5000'
+h = {'content-type':'application/json'}
 
 def easy_login():
-    h = {'content-type':'application/json'}
+    #
     url = url_base+'/api/v1/tokens'
     u = {'code':'caozhijie'}
     r = requests.post(url,headers=h,data=json.dumps(u))
     print(r.headers)
     print(r.json())
-
     print('='*30+'\n')
-
     token = r.json()['body']['token']
+
+    #
+    url = url_base+'/api/v1/addcard'
+    u = {'token':token,
+         'name':'中行',
+         'acdate':3,
+         'padate':17,
+         'num':29999,
+         'isCredit':1}
+    r = requests.post(url,headers=h,data=json.dumps(u))
+    print(r.headers)
+    print(r.json())
+
+    #
     url = url_base+'/api/v1/cards'
     u = {'token':token}
+    r = requests.post(url,headers=h,data=json.dumps(u))
+    print(r.headers)
+    print(r.json())
+
+    #
+    url = url_base+'/api/v1/delcard'
+    u = {'token':token,'cid':1}
     r = requests.post(url,headers=h,data=json.dumps(u))
     print(r.headers)
     print(r.json())
