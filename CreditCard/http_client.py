@@ -1,16 +1,35 @@
 import requests
 import json
+from requests.auth import HTTPBasicAuth
 
 url_base = 'http://127.0.0.1:5000'
 
-def get_data():
-    h = {
-        'content-type':'application/json',
-        }
+def easy_login():
+    h = {'content-type':'application/json'}
+    url = url_base+'/api/v1/tokens'
+    u = {'code':'caozhijie'}
+    r = requests.post(url,headers=h,data=json.dumps(u))
+    print(r.headers)
+    print(r.json())
+
+    print('='*30+'\n')
+
+    token = r.json()['body']['token']
+    url = url_base+'/api/v1/cards'
+    u = {'token':token}
+    r = requests.post(url,headers=h,data=json.dumps(u))
+    print(r.headers)
+    print(r.json())
+
+easy_login()
+
+
+
+
+def get_cards():
+    h = {'content-type':'application/json'}
     url = url_base+'/api/v1/user/1/cards'
-    r = requests.get(url,
-        headers=h
-        )
+    r = requests.get(url,headers=h)
     print(r.headers)
     print(r.json())
 
@@ -196,6 +215,3 @@ def get_incomegos():
     url = url_base+'/api/v1/user/1/incomegos'
     r = requests.get(url)
     print(r.json())
-
-
-get_incomegos()

@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # encoding: utf-8
 import app.model.MyApi as MyApi
+import os
+from app import create_app, db
+app = create_app(os.getenv('FLASK_CONFIG') or 'default')
 
 
 def inner_logic(uid):

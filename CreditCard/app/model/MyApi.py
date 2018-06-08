@@ -49,7 +49,7 @@ record_word = '''
 请输入:'''
 
 
-login_program = {'1': lambda f: f(input_user_name()),
+login_program = {'1': lambda f: f(find_user_by_apikey(input('请输入用户名:'))),
                  '2': lambda f: f(log_on_user(input('请输入用户名:')))}
 login_word = '\n'       \
              '(1)登录\n' \

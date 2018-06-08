@@ -1,26 +1,20 @@
-from .DBTable import Debt, Card, Repay
-from .DBConnect import DBSession
+from app import db
+from .DBTable import Repay, Card
 
 
 def add_repay(u, c, t, n):
-    session = DBSession()
-    repay = Repay(uid=u, cid=c, P_time=t, num=n)
-    session.add(repay)
-    session.commit()
-    session.close()
+    repay = Repay(uid=u, cid=c, date=t, num=n)
+    db.session.add(repay)
+    db.session.commit()
 
 
-def delete_repay(u, r):
-    session = DBSession()
-    query = session.query(Repay.rid)
-    query.filter(Repay.uid == u, Repay.rid == r).delete()
-    session.commit()
-    session.close()
+def delete_repay(r):
+    repay = Repay.query.get(r)
+    db.session.delete(repay)
+    db.session.commit()
 
 
 def find_repay(u):
-    session = DBSession()
-    query = session.query(Card.cid, Card.name, Repay.P_time, Repay.num, Repay.rid)
-    re = query.filter(Card.cid == Repay.cid, Repay.uid == u).order_by(Repay.P_time).all()
-    session.close()
+    query = db.session.query(Card.cid, Card.name, Repay.date, Repay.num, Repay.rid)
+    re = query.filter(Card.cid == Repay.cid, Repay.uid == u).order_by(Repay.date).all()
     return re

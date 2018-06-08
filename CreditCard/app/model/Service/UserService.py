@@ -8,7 +8,3 @@ def log_on_user(s):
 
 def find_user_by_apikey(n):
     return UserDao.find_user(n)
-
-
-def queding(u,s):
-    return UserDao.con_user(u,s)

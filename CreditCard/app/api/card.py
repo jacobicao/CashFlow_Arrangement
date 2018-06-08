@@ -1,12 +1,13 @@
-from flask import jsonify, request, current_app, url_for
+from flask import g, jsonify, request, current_app, url_for
 from . import api
 import json
 import app.model.MyApi as Controller
 
 
-@api.route('/user/<int:id>/cards')
-def api_GetCardList(id):
-    return jsonify(Controller.card_list(id))
+@api.route('/cards',methods=['POST'])
+def api_GetCardList():
+    print('api_GetCardList')
+    return jsonify(Controller.card_list(g.current_user.id))
 
 
 @api.route('/user/<int:id>/addcard',methods=['POST'])

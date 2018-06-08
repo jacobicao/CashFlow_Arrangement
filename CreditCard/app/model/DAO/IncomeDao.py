@@ -1,58 +1,46 @@
-from .DBTable import Income, Incomego, Debt
-from .DBConnect import DBSession
+from app import db
 from sqlalchemy import func
+from .DBTable import Income, Incomego
 
 
 def add_income(u, t, n):
-    session = DBSession()
-    income = Income(uid=u, P_time=t, num=n)
-    session.add(income)
-    session.commit()
-    session.close()
+    income = Income(uid=u, date=t, num=n)
+    db.session.add(income)
+    db.session.commit()
 
 
-def delete_income(i):
-    session = DBSession()
-    query = session.query(Income.iid)
-    query.filter(Income.iid == i).delete()
-    session.commit()
-    session.close()
+def delete_income(iid):
+    income = Income.query.get(iid)
+    db.session.delete(income)
+    db.session.commit()
 
 
 def find_income(u):
-    session = DBSession()
-    query = session.query(Income.iid, Income.P_time, Income.num)
-    re = query.filter(Income.uid == u).order_by(Income.P_time).all()
-    session.close()
+    query = db.session.query(Income.iid, Income.date, Income.num)
+    re = query.filter(Income.uid == u).order_by(Income.date).all()
     return re
 
 
 def add_incomego(u,i,t,n):
-    session = DBSession()
-    incomego = Incomego(uid=u, iid=i, P_time=t, num=n)
-    session.add(incomego)
-    session.commit()
-    session.close()
+    incomego = Incomego(uid=u, iid=i, date=t, num=n)
+    db.session.add(incomego)
+    db.session.commit()
 
 
 def delete_incomego(g):
-    session = DBSession()
-    query = session.query(Incomego.gid)
+    query = db.session.query(Incomego.gid)
     query.filter(Incomego.gid == g).delete()
-    session.commit()
-    session.close()
+    db.session.commit()
+
 
 def find_incomego(u):
-    session = DBSession()
-    query = session.query(Incomego.gid, Incomego.iid, Incomego.P_time, Incomego.num)
-    re = query.filter(Incomego.uid == u).order_by(Incomego.P_time).all()
-    session.close()
+    query = db.session.query(Incomego.gid, Incomego.iid, Incomego.date, Incomego.num)
+    re = query.filter(Incomego.uid == u).order_by(Incomego.date).all()
     return re
 
+
 def find_incomego_sum(u):
-    session = DBSession()
-    query = session.query(Income.P_time, Income.iid,
+    query = db.session.query(Income.date, Income.iid,
             (Income.num - func.coalesce(func.sum(Incomego.num),0)).label('num'))
-    re = query.outerjoin(Incomego).group_by(Income.iid).order_by(Income.P_time).all()
-    session.close()
+    re = query.outerjoin(Incomego).group_by(Income.iid).order_by(Income.date).all()
     return re
