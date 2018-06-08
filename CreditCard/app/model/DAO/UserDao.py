@@ -10,3 +10,7 @@ def add_user(s):
 
 def find_user(s):
     return User.query.filter(User.username == s).first()
+
+
+def verify_token(api_key):
+    return User.verify_auth_token(api_key)

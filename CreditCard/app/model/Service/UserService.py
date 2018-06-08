@@ -8,3 +8,7 @@ def log_on_user(s):
 
 def find_user_by_apikey(n):
     return UserDao.find_user(n)
+
+
+def verify_token(api_key):
+    return UserDao.verify_token(api_key)
