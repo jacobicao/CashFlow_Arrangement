@@ -27,5 +27,5 @@ def api_Login():
     uid = Controller.find_user_by_apikey(api_key)
     if uid == 0:
         uid = Controller.log_on_user(api_key)
-    res = {'status':1,'body':{'uid':uid,'api_key':api_key}}
+    res = {'status':1,'body':{'uid':uid,'oid':api_key}}
     return jsonify(res)
