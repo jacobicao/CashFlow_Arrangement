@@ -15,17 +15,29 @@ def easy_login():
     print('='*30+'\n')
     token = r.json()['body']['token']
 
-    #
-    url = url_base+'/api/v1/addcard'
-    u = {'token':token,
-         'name':'中行',
-         'acdate':3,
-         'padate':17,
-         'num':29999,
-         'isCredit':1}
-    r = requests.post(url,headers=h,data=json.dumps(u))
-    print(r.headers)
-    print(r.json())
+    #添加卡片
+    # url = url_base+'/api/v1/addcard'
+    # u = {'token':token,
+    #      'name':'中行',
+    #      'acdate':3,
+    #      'padate':17,
+    #      'num':29999,
+    #      'isCredit':1}
+    # r = requests.post(url,headers=h,data=json.dumps(u))
+    # u = {'token':token,
+    #      'name':'农行',
+    #      'acdate':7,
+    #      'padate':1,
+    #      'num':59999,
+    #      'isCredit':1}
+    # r = requests.post(url,headers=h,data=json.dumps(u))
+    # u = {'token':token,
+    #      'name':'建行',
+    #      'acdate':17,
+    #      'padate':6,
+    #      'num':37000,
+    #      'isCredit':1}
+    # r = requests.post(url,headers=h,data=json.dumps(u))
 
     #
     url = url_base+'/api/v1/cards'
@@ -33,13 +45,37 @@ def easy_login():
     r = requests.post(url,headers=h,data=json.dumps(u))
     print(r.headers)
     print(r.json())
+    print('='*30+'\n')
 
     #
-    url = url_base+'/api/v1/delcard'
-    u = {'token':token,'cid':1}
+    # url = url_base+'/api/v1/adddebt'
+    # u = {'token':token,
+    #      'cid':'1',
+    #      'date':'2018-6-9',
+    #      'num':10000,
+    #      }
+    # r = requests.post(url,headers=h,data=json.dumps(u))
+
+    #
+    url = url_base+'/api/v1/debts'
+    u = {'token':token}
     r = requests.post(url,headers=h,data=json.dumps(u))
     print(r.headers)
     print(r.json())
+    print('='*30+'\n')
+
+    url = url_base+'/api/v1/plan'
+    u = {'token':token}
+    r = requests.post(url,headers=h,data=json.dumps(u))
+    print(r.headers)
+    print(r.json())
+    print('='*30+'\n')
+
+    # url = url_base+'/api/v1/delcard'
+    # u = {'token':token,'cid':1}
+    # r = requests.post(url,headers=h,data=json.dumps(u))
+    # print(r.headers)
+    # print(r.json())
 
 easy_login()
 

@@ -8,21 +8,21 @@ def add_debt(u, c, t, n):
 
 
 def delete_debt(u, d):
-    debt = Debt.query.filter(Debt.uid == u, Debt.id == d)
+    debt = Debt.query.get(d)
     db.session.delete(debt)
     db.session.commit()
 
 
 def find_debt(u):
     query = db.session.query(Debt.cid, Card.name, Debt.date, Debt.num, Debt.id)
-    re = query.filter(Card.cid == Debt.cid, Debt.uid == u,
+    re = query.filter(Card.id == Debt.cid, Debt.uid == u,
                         Card.ct == 1).order_by(Debt.date).all()
     return re
 
 
 def find_load(u):
     query = db.session.query(Debt.cid, Card.name, Debt.date, Debt.num, Debt.id)
-    re = query.filter(Card.cid == Debt.cid, Debt.uid == u,
+    re = query.filter(Card.id == Debt.cid, Debt.uid == u,
                         Card.ct == 0).order_by(Debt.date).all()
     return re
 

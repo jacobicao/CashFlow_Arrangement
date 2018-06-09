@@ -5,25 +5,25 @@ def card_list(uid):
     ll = []
     for v in CardDao.find_card(uid):
         cl = {}
-        cl['cid'] = v[0]
+        cl['id'] = v[0]
         cl['name'] = v[1]
         cl['acdate'] = v[2]
         cl['padate'] = v[3]
         cl['num'] = v[4]
         ll.append(cl)
-    return ll
+    return {'status':1,'body':{'cards':ll}}
 
-def load_account_list(uid):
+def loan_account_list(uid):
     ll = []
     for v in CardDao.find_load_account(uid):
         cl = {}
-        cl['cid'] = v[0]
+        cl['id'] = v[0]
         cl['name'] = v[1]
         cl['acdate'] = v[2]
         cl['padate'] = v[3]
         cl['num'] = v[4]
         ll.append(cl)
-    return ll
+    return {'status':1,'body':{'loanaccounts':ll}}
 
 
 def add_one_card(u,s,a,p,f,c):

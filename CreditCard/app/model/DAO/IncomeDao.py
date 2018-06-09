@@ -16,7 +16,7 @@ def delete_income(iid):
 
 
 def find_income(u):
-    query = db.session.query(Income.iid, Income.date, Income.num)
+    query = db.session.query(Income.id, Income.date, Income.num)
     re = query.filter(Income.uid == u).order_by(Income.date).all()
     return re
 
@@ -28,19 +28,19 @@ def add_incomego(u,i,t,n):
 
 
 def delete_incomego(g):
-    query = db.session.query(Incomego.gid)
-    query.filter(Incomego.gid == g).delete()
+    incomego = Incomego.query.get(g)
+    db.session.delete(incomego)
     db.session.commit()
 
 
 def find_incomego(u):
-    query = db.session.query(Incomego.gid, Incomego.iid, Incomego.date, Incomego.num)
+    query = db.session.query(Incomego.id, Incomego.iid, Incomego.date, Incomego.num)
     re = query.filter(Incomego.uid == u).order_by(Incomego.date).all()
     return re
 
 
 def find_incomego_sum(u):
-    query = db.session.query(Income.date, Income.iid,
+    query = db.session.query(Income.date, Income.id,
             (Income.num - func.coalesce(func.sum(Incomego.num),0)).label('num'))
-    re = query.outerjoin(Incomego).group_by(Income.iid).order_by(Income.date).all()
+    re = query.outerjoin(Incomego).group_by(Income.id).order_by(Income.date).all()
     return re

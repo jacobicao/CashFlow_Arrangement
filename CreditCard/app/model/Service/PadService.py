@@ -52,11 +52,11 @@ def cal_plan(pad,days):
 def print_plan(uid,plan,a):
     if not len(plan):
         return {}
-    format_er = '{}: {:4s} -> {:6.0f} + {:3.0f} -> {:4s}'
-    dd = []
+    # format_er = '{}: {:4s} -> {:6.0f} + {:3.0f} -> {:4s}'
+    # dd = []
     res = []
     for index, row in plan.iterrows():
-        dd.append(format_er.format(row['date'].date(),row['take'],row['num'],row['fee'],row['repay']))
+        # dd.append(format_er.format(row['date'].date(),row['take'],row['num'],row['fee'],row['repay']))
         ll = {}
         ll['date'] = row['date'].date().strftime('%Y-%m-%d')
         ll['name_out'] = row['take']
@@ -64,9 +64,9 @@ def print_plan(uid,plan,a):
         ll['fee'] = round(row['fee'],0)
         ll['name_in'] = row['repay']
         res.append(ll)
-    dd = '\n'.join(dd)
-    print(dd);print(a)
-    print('=' * 20)
+    # dd = '\n'.join(dd)
+    # print(dd);print(a)
+    # print('=' * 20)
     # save_plan(dd)
     # tp = input('已执行第一条?(y/n)')
     # if tp == 'y':
@@ -77,12 +77,12 @@ def print_plan(uid,plan,a):
 
 
 def cal_debt_current(uid):
+    ll = []
     pad = CardPad()
     init_pad(pad, uid)
     d = pad.get_total_debt_list()
     if not len(d):
-        return {}
-    ll = []
+        return {'status':1,'body':{'debts':ll}}
     for x in d:
         cl = {}
         cl['date'] = x[0].strftime('%Y-%m-%d')
@@ -90,9 +90,9 @@ def cal_debt_current(uid):
         cl['name'] = x[2]
         cl['num'] = x[3]
         ll.append(cl)
-    print('\n'.join(map(lambda x: '{0}: {2} 需还款 {3:.0f}'.format(*x),d)))
-    print('=' * 20)
-    print('共%.0f元'%(sum(map(lambda x:x[3],d))))
+    # print('\n'.join(map(lambda x: '{0}: {2} 需还款 {3:.0f}'.format(*x),d)))
+    # print('=' * 20)
+    # print('共%.0f元'%(sum(map(lambda x:x[3],d))))
     return {'status':1,'body':{'debts':ll}}
 
 

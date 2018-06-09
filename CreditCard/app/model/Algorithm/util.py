@@ -13,6 +13,8 @@ def is_days(s):
     return True
 
 def is_date(s):
+    if not isinstance(s,str):
+        return False
     try:
         dt.datetime.strptime(s,'%Y-%m-%d')
     except ValueError:

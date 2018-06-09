@@ -15,6 +15,6 @@ def delete_repay(r):
 
 
 def find_repay(u):
-    query = db.session.query(Card.cid, Card.name, Repay.date, Repay.num, Repay.rid)
-    re = query.filter(Card.cid == Repay.cid, Repay.uid == u).order_by(Repay.date).all()
+    query = db.session.query(Card.id, Card.name, Repay.date, Repay.num, Repay.id)
+    re = query.filter(Card.id == Repay.cid, Repay.uid == u).order_by(Repay.date).all()
     return re

@@ -1,35 +1,37 @@
-from flask import jsonify, request, current_app, url_for
+from flask import g, jsonify, request, current_app, url_for
 from . import api
 import json
 import app.model.MyApi as Controller
 
 
-@api.route('/user/<int:id>/incomes')
-def api_GetIncomeList(id):
-    return jsonify(Controller.income_list(id))
+@api.route('/incomes',methods=['POST'])
+def api_GetIncomeList():
+    return jsonify(Controller.income_list(g.current_user.id))
 
 
-@api.route('/user/<int:id>/incomegos')
-def api_GetIncomeGoList(id):
-    return jsonify(Controller.incomego_list(id))
+@api.route('/incomegos',methods=['POST'])
+def api_GetIncomeGoList():
+    return jsonify(Controller.incomego_list(g.current_user.id))
 
 
-@api.route('/user/<int:id>/addincome',methods=['POST'])
-def api_AddIncome(id):
+@api.route('/addincome',methods=['POST'])
+def api_AddIncome():
+    id = g.current_user.id
     b = json.loads(str(request.get_data(), encoding = "utf-8"))
     n = b.get('num')
     d = b.get('date')
     if not all([n,d]):
-        res = {'err': 1, 'msg': '参数不完整'}
+        res = {'stutas': 2, 'msg': '参数不完整'}
         return jsonify(res)
     res = Controller.add_one_income(id,n,d)
     return jsonify(res)
 
 
-@api.route('/user/<int:id>/delincome',methods=['POST'])
-def api_DelIncome(id):
+@api.route('/delincome',methods=['POST'])
+def api_DelIncome():
+    id = g.current_user.id
     b = json.loads(str(request.get_data(), encoding = "utf-8"))
-    iid = b.get('iid')
+    iid = b.get('id')
     if not iid:
         res = {'err': 1, 'msg': '参数不完整'}
         return jsonify(res)
@@ -37,10 +39,11 @@ def api_DelIncome(id):
     return jsonify(res)
 
 
-@api.route('/user/<int:id>/delincomego',methods=['POST'])
-def api_DelIncomeGo(id):
+@api.route('/delincomego',methods=['POST'])
+def api_DelIncomeGo():
+    id = g.current_user.id
     b = json.loads(str(request.get_data(), encoding = "utf-8"))
-    gid = b.get('gid')
+    gid = b.get('id')
     if not gid:
         res = {'err': 1, 'msg': '参数不完整'}
         return jsonify(res)

@@ -29,7 +29,7 @@ def api_AddCard():
 def api_DelCard():
     id = g.current_user.id
     b = json.loads(str(request.get_data(), encoding = "utf-8"))
-    cid = b.get('cid')
+    cid = b.get('id')
     if not cid:
         res = {'err': 1, 'msg': '参数不完整'}
         return jsonify(res)

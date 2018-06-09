@@ -31,8 +31,8 @@ def load_user_from_request(request):
             g.token_used = True
             return user
     JS_CODE = b.get('code')
-    # openid = get_openid(JS_CODE).get('openid')
-    openid = JS_CODE
+    openid = get_openid(JS_CODE).get('openid')
+    # openid = JS_CODE
     if openid is None:
         return
     user = Controller.find_user_by_apikey(openid)
@@ -47,9 +47,9 @@ def load_user_from_request(request):
 @login_required
 def before_request():
     if g.current_user.is_anonymous:
-        return forbidden('Unconfirmed account')
+        return unauthorized('Invalid credentials')
     if not g.current_user.confirmed:
-        return forbidden('Unconfirmed account')
+        return unauthorized('Invalid credentials')
 
 
 @api.route('/tokens', methods=['POST'])
