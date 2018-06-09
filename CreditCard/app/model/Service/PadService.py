@@ -1,11 +1,11 @@
-from app.model.Algorithm.CardPad import CardPad, pdcol
+from app.model.Algorithm.CardPad import CardPad
 from app.model.Algorithm.CreditCard import CreditCard
+from app.model.Algorithm.util import dateRange_by_days
 from app.model.Service.RepayService import quick_repay
 import app.model.DAO.DebtDao as DebtDao
 import app.model.DAO.CardDao as CardDao
 import app.model.DAO.RepayDao as RepayDao
 import app.model.DAO.IncomeDao as IncomeDao
-import pandas as pd
 import datetime as dt
 
 
@@ -37,42 +37,31 @@ def cal_plan(pad,days):
     dt_start = pad.get_first_date()
     if dt_start is None:
         return [],None
-    dt_start -= dt.timedelta(days=1)
-    rng = pd.date_range(dt_start,periods=days).date
+    dt_start -= dt.timedelta(days=10)
+    rng = dateRange_by_days(dt_start,days)
     for t in rng:
         pad.check_repay(t)
     a = '\n%s: 当前信用卡负债还有 %.f' % (t, pad.get_total_debt())
     a += ('\n%s: 区间总手续费达 %.f\n' % (t, pad.get_total_fee()))
-    plan = pd.DataFrame(pad.plan, columns=pdcol)
-    plan.date = pd.to_datetime(plan.date)
-    return plan,a
+    return pad.plan,a
 
 
 # view
 def print_plan(uid,plan,a):
     if not len(plan):
         return {}
-    # format_er = '{}: {:4s} -> {:6.0f} + {:3.0f} -> {:4s}'
-    # dd = []
     res = []
-    for index, row in plan.iterrows():
-        # dd.append(format_er.format(row['date'].date(),row['take'],row['num'],row['fee'],row['repay']))
+    for row in plan:
         ll = {}
-        ll['date'] = row['date'].date().strftime('%Y-%m-%d')
-        ll['name_out'] = row['take']
-        ll['num'] = round(row['num'],0)
-        ll['fee'] = round(row['fee'],0)
-        ll['name_in'] = row['repay']
+        ll['date'] = row[0].strftime('%Y-%m-%d')
+        ll['name_out'] = row[1]
+        ll['num'] = round(row[2],0)
+        ll['fee'] = round(row[3],0)
+        ll['name_in'] = row[4]
+        ll['repaytype'] = row[5]
+        ll['oid'] = row[6]
+        ll['cid'] = row[7]
         res.append(ll)
-    # dd = '\n'.join(dd)
-    # print(dd);print(a)
-    # print('=' * 20)
-    # save_plan(dd)
-    # tp = input('已执行第一条?(y/n)')
-    # if tp == 'y':
-    #     # pid = input('哪一条计划?')
-    #     pid = 0
-    #     quick_repay(uid,plan.iloc[int(pid)])
     return res
 
 

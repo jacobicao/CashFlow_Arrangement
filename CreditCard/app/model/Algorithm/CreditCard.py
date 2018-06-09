@@ -7,7 +7,7 @@
 3. 分view层
 """
 import datetime as dt
-import pandas.tseries.offsets as pto
+from .util import datetime_offset_by_month
 
 # permit cash out on D days after statement date
 D = 10
@@ -16,7 +16,6 @@ C = 1
 # constance
 DayO = dt.timedelta(days=0)
 Day4 = dt.timedelta(days=D)
-Month1 = pto.DateOffset(months=1)
 
 
 def cal_repay_date(d, state, repay):
@@ -27,7 +26,7 @@ def cal_repay_date(d, state, repay):
         q = 2
     else:
         q = 1
-    return (d.replace(day=repay) + pto.DateOffset(months=q)).date()
+    return datetime_offset_by_month(d.replace(day=repay),q).date()
 
 
 class CreditCard:
@@ -57,7 +56,7 @@ class CreditCard:
         if self.debt >= self.limit * 0.8:
             return False
         d1 = d.replace(day=self.statement_date)
-        d2 = (d.replace(day=self.statement_date) - Month1).date()
+        d2 = datetime_offset_by_month(d.replace(day=self.statement_date),-1).date()
         bre1 = DayO < d - d1 < Day4
         bre2 = DayO < d - d2 < Day4
         return bre1 or bre2

@@ -1,7 +1,6 @@
 import datetime as dt
-import pandas as pd
 import app.model.DAO.DebtDao as DebtDao
-from app.model.Algorithm.util import is_float, is_date
+from app.model.Algorithm.util import is_float, is_date, dateRange
 
 
 def debt_list(uid):
@@ -68,7 +67,7 @@ def add_loan(uid,cid,num,ts,en):
         return {'status':2,'msg':'数量错误'}
     if not is_date(ts) or not is_date(en):
         return {'status':2,'msg':'日期错误'}
-    d = pd.date_range(ts,en,freq='MS')
+    d = dateRange(ts,en,freq='MS')
     try:
         DebtDao.add_bulk_debt(uid, cid, d, num)
     except Exception as e:
