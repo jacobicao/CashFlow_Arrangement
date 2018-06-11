@@ -1,13 +1,6 @@
-
 .DS_Store
-.ipynb_checkpoints/Untitled-checkpoint.ipynb
-*.txt
-*.html
 *.pyc
 *.csv
-*.csv
-CreditCard/card.csv
-CreditCard/card.csv
 .idea
 *.db
 *.sqlite
