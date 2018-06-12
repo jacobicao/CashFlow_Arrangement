@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 from app.model.Algorithm.CardPad import CardPad
 from app.model.Algorithm.CreditCard import CreditCard
 from app.model.Algorithm.util import dateRange_by_days

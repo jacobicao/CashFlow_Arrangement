@@ -1,5 +1,5 @@
+# -*- coding: UTF-8 -*-
 #!/usr/bin/env python
-# encoding: utf-8
 import app.model.MyApi as MyApi
 import os
 from app import create_app, db

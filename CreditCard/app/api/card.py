@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 from flask import g, jsonify, request, current_app, url_for
 from . import api
 import json

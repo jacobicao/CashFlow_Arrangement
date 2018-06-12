@@ -1,4 +1,4 @@
-# from flask_httpauth import HTTPBasicAuth
+# -*- coding: UTF-8 -*-
 from flask_login import login_user, login_required, current_user
 from flask import g, jsonify, request, current_app, url_for
 from app import login_manager
@@ -32,7 +32,6 @@ def load_user_from_request(request):
             return user
     JS_CODE = b.get('code')
     openid = get_openid(JS_CODE).get('openid')
-    # openid = JS_CODE
     if openid is None:
         return
     user = Controller.find_user_by_apikey(openid)

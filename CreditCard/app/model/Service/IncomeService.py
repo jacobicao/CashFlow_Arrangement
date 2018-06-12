@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 import datetime as dt
 import app.model.DAO.IncomeDao as IncomeDAO
 from app.model.Algorithm.util import is_float, is_days, is_date

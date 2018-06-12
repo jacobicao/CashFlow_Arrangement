@@ -1,5 +1,5 @@
+# -*- coding: UTF-8 -*-
 #!/usr/bin/env python
-# encoding: utf-8
 """
 需求列表：
 1. 小额贷也纳入卡包，然后考虑贷款利息

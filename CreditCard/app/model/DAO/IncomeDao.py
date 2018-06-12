@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 from app import db
 from sqlalchemy import func
 from .DBTable import Income, Incomego

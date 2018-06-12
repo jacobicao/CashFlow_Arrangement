@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 import app.model.DAO.CardDao as CardDao
 from app.model.Algorithm.util import is_float, is_days
 

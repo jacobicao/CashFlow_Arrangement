@@ -1,5 +1,5 @@
+# -*- coding: UTF-8 -*-
 #!/usr/bin/env python
-# encoding: utf-8
 from .Pad import Pad
 import datetime as dt
 

@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 from .Service.CardService import *
 from .Service.UserService import *
 from .Service.IncomeService import *

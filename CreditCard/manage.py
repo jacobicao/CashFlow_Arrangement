@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 import os
 from flask_script import Shell
 from flask_script import Manager

@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 import datetime as dt
 import app.model.DAO.RepayDao as RepayDao
 import app.model.DAO.DebtDao as DebtDao

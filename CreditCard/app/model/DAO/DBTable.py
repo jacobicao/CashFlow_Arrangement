@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 from datetime import datetime
 from app import db, login_manager
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
