@@ -7,7 +7,7 @@
 3. 分view层
 """
 import datetime as dt
-from .util import datetime_offset_by_month
+from .util import datetime_offset_by_month, cal_repay_date
 
 # permit cash out on D days after statement date
 D = 10
@@ -16,17 +16,6 @@ C = 1
 # constance
 DayO = dt.timedelta(days=0)
 Day4 = dt.timedelta(days=D)
-
-
-def cal_repay_date(d, state, repay):
-    this_month_statement_date = d.replace(day=state)
-    if d <= this_month_statement_date and state < repay:
-        q = 0
-    elif d > this_month_statement_date and state > repay:
-        q = 2
-    else:
-        q = 1
-    return datetime_offset_by_month(d.replace(day=repay),q).date()
 
 
 class CreditCard:

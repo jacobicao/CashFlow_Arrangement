@@ -1,8 +1,15 @@
 # -*- coding: UTF-8 -*-
 import app.model.DAO.CardDao as CardDao
-from app.model.Algorithm.util import is_float, is_days
+import app.model.DAO.DebtDao as DebtDao
+from app.model.Algorithm.util import is_float, is_days, cal_repay_date
+import datetime as dt
+
 
 def card_list(uid):
+    d = dt.date.today()
+    debtlist = {}
+    for v in DebtDao.find_debt_res(uid):
+        debtlist[v[0]] = v[1]
     ll = []
     for v in CardDao.find_card(uid):
         cl = {}
@@ -10,9 +17,15 @@ def card_list(uid):
         cl['name'] = v[1]
         cl['acdate'] = v[2]
         cl['padate'] = v[3]
+        cl['freedays'] = (cal_repay_date(d, cl['acdate'], cl['padate'])-d).days
+        used = debtlist.get(v[0])
+        cl['used'] = used if used else 0
         cl['num'] = v[4]
+        cl['avail'] = cl['num']-cl['used']
         ll.append(cl)
+    ll.sort(key=lambda x: x['freedays'],reverse=True)
     return {'status':1,'body':{'cards':ll}}
+
 
 def loan_account_list(uid):
     ll = []

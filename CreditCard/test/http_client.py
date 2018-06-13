@@ -44,7 +44,7 @@ def easy_login():
     u = {'token':token}
     r = requests.post(url,headers=h,data=json.dumps(u))
     print(r.headers)
-    print(r.json())
+    print(r.data)
     print('='*30+'\n')
 
     #
@@ -57,19 +57,19 @@ def easy_login():
     # r = requests.post(url,headers=h,data=json.dumps(u))
 
     #
-    url = url_base+'/api/v1/debts'
-    u = {'token':token}
-    r = requests.post(url,headers=h,data=json.dumps(u))
-    print(r.headers)
-    print(r.json())
-    print('='*30+'\n')
-
-    url = url_base+'/api/v1/plan'
-    u = {'token':token}
-    r = requests.post(url,headers=h,data=json.dumps(u))
-    print(r.headers)
-    print(r.json())
-    print('='*30+'\n')
+    # url = url_base+'/api/v1/debts'
+    # u = {'token':token}
+    # r = requests.post(url,headers=h,data=json.dumps(u))
+    # print(r.headers)
+    # print(r.json())
+    # print('='*30+'\n')
+    #
+    # url = url_base+'/api/v1/plan'
+    # u = {'token':token}
+    # r = requests.post(url,headers=h,data=json.dumps(u))
+    # print(r.headers)
+    # print(r.json())
+    # print('='*30+'\n')
 
     # url = url_base+'/api/v1/delcard'
     # u = {'token':token,'cid':1}

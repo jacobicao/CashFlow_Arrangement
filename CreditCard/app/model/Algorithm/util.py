@@ -68,3 +68,14 @@ def datetime_offset_by_month(datetime1, n = 1):
     if datetime1.day >= datetime2.day:
         return datetime2
     return datetime2.replace(day = datetime1.day)
+
+
+def cal_repay_date(d, state, repay):
+    this_month_statement_date = d.replace(day=state)
+    if d <= this_month_statement_date and state < repay:
+        q = 0
+    elif d > this_month_statement_date and state > repay:
+        q = 2
+    else:
+        q = 1
+    return datetime_offset_by_month(d.replace(day=repay),q).date()

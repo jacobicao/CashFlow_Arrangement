@@ -175,7 +175,7 @@ class Income(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     num = db.Column(db.Float)
     date = db.Column(db.Date)
-    incomegos = db.relationship('Incomego', backref='card', lazy='dynamic')
+    incomegos = db.relationship('Incomego', backref='income', lazy='dynamic')
 
 
 class Incomego(db.Model):
