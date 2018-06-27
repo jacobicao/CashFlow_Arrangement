@@ -42,10 +42,13 @@ def delete_card_debt(u,c):
 
 
 def find_debt_res(u):
-    query = db.session.query(Debt.cid,
-            (func.coalesce(func.sum(Debt.num),0) -
-            func.coalesce(func.sum(Repay.num),0)).label('num'))
-    re = query.outerjoin(Repay, Repay.cid == Debt.cid).filter(Debt.uid == u).group_by(Repay.cid)
-    # query = db.session.query(Debt.cid,func.coalesce(func.sum(Debt.num),0).label('num'))
-    # re = query.filter(Debt.uid == u).group_by(Debt.cid).all()
+    dd = db.session.query(Debt.cid,(func.coalesce(func.sum(Debt.num),0)).label('num'))\
+            .filter(Debt.uid == u)\
+            .group_by(Debt.cid).subquery()
+    rr = db.session.query(Repay.cid,(func.coalesce(func.sum(Repay.num),0)).label('num'))\
+            .filter(Repay.uid == u)\
+            .group_by(Repay.cid).subquery()
+    re = db.session.query(dd.c.cid,func.coalesce(dd.c.num,0)-func.coalesce(rr.c.num,0))\
+            .outerjoin(rr,dd.c.cid==rr.c.cid)\
+            .order_by(dd.c.cid)
     return re.all()
