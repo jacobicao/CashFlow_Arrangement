@@ -28,7 +28,7 @@ def card_list(uid):
         cl = {}
         cl['id'] = v[0]
         cl['name'] = v[1]
-        cl['acdate'] = v[2]
+        cl['acdate'] = 0
         cl['padate'] = v[3]
         cl['num'] = 0
         cl['freedays'] = 0

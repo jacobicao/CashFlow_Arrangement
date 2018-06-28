@@ -32,7 +32,7 @@ def find_load(u):
 def add_bulk_debt(u,c,ts,n):
     mapping = [dict(uid=u, cid=c, date=i, num=n) for i in ts]
     db.session.bulk_insert_mappings(Debt,mapping)
-    db.ession.commit()
+    db.session.commit()
 
 
 def delete_card_debt(u,c):
