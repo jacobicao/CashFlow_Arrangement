@@ -36,8 +36,8 @@ def add_bulk_debt(u,c,ts,n):
 
 
 def delete_card_debt(u,c):
-    debts = Debt.query.filter(Debt.uid == u, Debt.cid == c)
-    db.session.delete(debts)
+    res = db.session.query(Debt).filter(Debt.uid == u, Debt.cid == c)
+    res.delete(synchronize_session=False)
     db.session.commit()
 
 
