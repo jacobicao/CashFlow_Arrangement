@@ -68,7 +68,7 @@ def add_loan(uid,cid,num,ts,en):
         return {'status':2,'msg':'数量错误'}
     if not is_date(ts) or not is_date(en):
         return {'status':2,'msg':'日期错误'}
-    d = dateRange(ts,en,freq='MS')
+    d = dateRange(ts,en)
     try:
         DebtDao.add_bulk_debt(uid, cid, d, num)
     except Exception as e:

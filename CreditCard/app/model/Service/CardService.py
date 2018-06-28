@@ -24,6 +24,17 @@ def card_list(uid):
         cl['avail'] = cl['num']-cl['used']
         ll.append(cl)
     ll.sort(key=lambda x: x['freedays'],reverse=True)
+    for v in CardDao.find_load_account(uid):
+        cl = {}
+        cl['id'] = v[0]
+        cl['name'] = v[1]
+        cl['acdate'] = v[2]
+        cl['padate'] = v[3]
+        cl['num'] = 0
+        cl['freedays'] = 0
+        cl['used'] = used if used else 0
+        cl['avail'] = 0
+        ll.append(cl)
     return {'status':1,'body':{'cards':ll}}
 
 
