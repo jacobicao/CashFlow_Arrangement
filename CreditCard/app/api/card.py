@@ -19,7 +19,9 @@ def api_AddCard():
     p = b.get('padate')
     n = b.get('num')
     c = b.get('isCredit')
-    if not all([s,a,p,n,c]):
+    if c == None:
+        c = 1
+    if not all([s,a,p,n]):
         res = {'status': 2, 'msg': '参数不完整'}
         return jsonify(res)
     res = Controller.add_one_card(id,s,a,p,n,c)
