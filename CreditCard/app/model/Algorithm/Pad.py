@@ -38,8 +38,8 @@ class Pad:
     def get_total_debt_list(self):
         s = []
         for c in self.pool:
-            if c.ct == 0:
-                continue
+            # if c.ct == 0:
+            #     continue
             s.extend([(k,c.cid,c.name,v) for k,v in c.debt_list.items()])
         s.sort(key=lambda x:x[0])
         return s
