@@ -20,7 +20,7 @@ class CardPad(Pad):
             oid = cc.cid
         ll = cc.consume(t, p)
         if cn == '工资' and len(ll):
-            inc = 2
+            inc = 3
             for v in ll:
                 self.plan.append((t, cn, v[1], 0, c.get_name(),inc,v[0],c.cid))
         else:
