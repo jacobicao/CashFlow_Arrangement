@@ -30,7 +30,10 @@ def income_list(uid):
             ll[m] = {'month':m,'records':[cl]}
         else:
             ll[m]['records'].append(cl)
-    return {'status':1,'body':{'records':list(ll.values())}}
+    ll = list(ll.values())
+    for v in ll:
+        v['records'] = sorted(v['records'],key=lambda x: x['date'])
+    return {'status':1,'body':{'records':ll}}
 
 
 def add_one_income(uid,n,t):

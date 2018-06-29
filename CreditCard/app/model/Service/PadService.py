@@ -2,7 +2,6 @@
 from app.model.Algorithm.CardPad import CardPad
 from app.model.Algorithm.CreditCard import CreditCard
 from app.model.Algorithm.util import dateRange_by_days
-from app.model.Service.RepayService import quick_repay
 import app.model.DAO.DebtDao as DebtDao
 import app.model.DAO.CardDao as CardDao
 import app.model.DAO.RepayDao as RepayDao

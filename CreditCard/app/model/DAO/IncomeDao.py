@@ -28,10 +28,31 @@ def add_incomego(u,i,t,n):
     db.session.commit()
 
 
+def add_bulk_incomego(u,t,ts):
+    mapping = [dict(uid=u, iid=s[0], date=t, num=s[1]) for s in ts]
+    db.session.bulk_insert_mappings(Incomego,mapping)
+    db.session.commit()
+
 def delete_incomego(g):
     incomego = Incomego.query.get(g)
     db.session.delete(incomego)
     db.session.commit()
+
+
+def find_income_before_date(u,t):
+    dd = db.session.query(
+            (func.coalesce(func.sum(Income.num),0)).label('num'))\
+            .filter(Income.uid == u, Income.date <= t)\
+            .first()
+    rr = db.session.query(
+            (func.coalesce(func.sum(Incomego.num),0)).label('num'))\
+            .filter(Incomego.uid == u, Incomego.date <= t)\
+            .first()
+    if dd == None or len(dd) == 0:
+        dd = [0,]
+    if rr == None or len(rr) == 0:
+        rr = [0,]
+    return dd[0]-rr[0]
 
 
 def find_incomego(u):

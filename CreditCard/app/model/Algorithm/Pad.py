@@ -90,3 +90,7 @@ class Pad:
             if v[0]<=t:
                 a += v[2]
         return a
+
+
+    def clear_income(self):
+        self.income.clear()

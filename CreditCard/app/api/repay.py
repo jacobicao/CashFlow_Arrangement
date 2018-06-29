@@ -34,3 +34,26 @@ def api_DelRepay():
         return jsonify(res)
     res = Controller.delete_one_repay(id,rid)
     return jsonify(res)
+
+
+@api.route('/addexchange',methods=['POST'])
+def api_AddExchange():
+    id = g.current_user.id
+    b = json.loads(str(request.get_data(), encoding = "utf-8"))
+    s = b.get('cid')
+    n = b.get('num')
+    d = b.get('date')
+    o = b.get('oid')
+    p = b.get('repaytype')
+    if not all([s,n,d,p]):
+        res = {'status': 2, 'msg': '参数不完整'}
+        return jsonify(res)
+    if p == 1:
+        res = Controller.quick_repay_by_card(id,s,n,d,o)
+    elif p == 2:
+        res = Controller.quick_repay_by_cash(id,s,n,d)
+    elif p == 3:
+        res = Controller.quick_repay_by_income(id,s,n,o)
+    else:
+        res = {'msg':'该类型还款方式暂未实现','status':2}
+    return jsonify(res)
