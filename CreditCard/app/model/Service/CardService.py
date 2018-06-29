@@ -32,11 +32,11 @@ def card_list(uid):
         cl['name'] = v[1]
         cl['acdate'] = 0
         cl['padate'] = v[3]
-        cl['num'] = v[4]
+        cl['num'] = 0
         cl['freedays'] = 0
         used = debtlist.get(v[0])
-        cl['used'] = cl['num']-cl['used']
         cl['avail'] = used if used else 0
+        cl['used'] = 0
         ll.append(cl)
     return {'status':1,'body':{'cards':ll}}
 
