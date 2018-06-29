@@ -53,7 +53,7 @@ def api_AddExchange():
     elif p == 2:
         res = Controller.quick_repay_by_cash(id,s,n,d)
     elif p == 3:
-        res = Controller.quick_repay_by_income(id,s,n,o)
+        res = Controller.quick_repay_by_income(id,s,n,d,o)
     else:
         res = {'msg':'该类型还款方式暂未实现','status':2}
     return jsonify(res)
