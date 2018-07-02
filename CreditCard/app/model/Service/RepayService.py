@@ -11,8 +11,8 @@ from app.model.Algorithm.CardPad import CardPad
 def repay_list(uid):
     ll = {}
     for v in RepayDao.find_repay(uid):
-        if v[1] == '房贷':
-            continue
+        # if v[1] == '房贷':
+        #     continue
         m = v[2].strftime("%m月")
         cl = {}
         cl['cid'] = v[0]
