@@ -63,6 +63,7 @@ def find_incomego(u):
 
 def find_incomego_sum(u):
     query = db.session.query(Income.date, Income.id,
-            (Income.num - func.coalesce(func.sum(Incomego.num),0)).label('num'))
-    re = query.outerjoin(Incomego).group_by(Income.id).order_by(Income.date).all()
-    return re
+            (Income.num - func.coalesce(func.sum(Incomego.num),0)).label('num'))\
+            .filter(Income.uid == u)
+    re = query.outerjoin(Incomego).group_by(Income.id).order_by(Income.date)
+    return re.all()
