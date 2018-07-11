@@ -5,6 +5,7 @@ from .Service.IncomeService import *
 from .Service.DebtService import *
 from .Service.PadService import *
 from .Service.RepayService import *
+from .Service.ReportService import *
 
 
 record_program = {

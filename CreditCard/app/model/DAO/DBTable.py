@@ -185,3 +185,16 @@ class Incomego(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     num = db.Column(db.Float)
     date = db.Column(db.Date)
+
+
+class ReportProblem(db.Model):
+    __tablename__ = 'reportsproblems'
+    id = db.Column(db.Integer, primary_key=True)
+    uid = db.Column(db.Integer, db.ForeignKey('users.id'))
+    rep_time = db.Column(db.DateTime(), default=datetime.utcnow)
+    isadvice = db.Column(db.Boolean, default=True)
+    pageAdr = db.Column(db.String(128))
+    content = db.Column(db.String(1024))
+    userName = db.Column(db.String(32))
+    answer = db.Column(db.String(1024))
+    ans_time = db.Column(db.DateTime(), default=datetime.utcnow)

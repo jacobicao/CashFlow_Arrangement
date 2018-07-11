@@ -4,8 +4,9 @@ from flask import render_template, redirect, url_for, abort, flash, request,\
 from flask_login import login_required, current_user
 from flask_sqlalchemy import get_debug_queries
 from . import main
-import time
+import datetime
 
 @main.route('/')
 def index():
-    return '<h1>Hello, %s</h1>'%time.ctime()
+    s = datetime.datetime.today().strftime("%Y-%m-%d %H:%M:%S")
+    return '<h1>Hello, you just login at %s</h1>.'%s

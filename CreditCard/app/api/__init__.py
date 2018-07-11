@@ -3,4 +3,4 @@ from flask import Blueprint
 
 api = Blueprint('api', __name__)
 
-from . import card, debt, plan, repay, income, authentication
+from . import card, debt, plan, repay, income, reportproblem, authentication
