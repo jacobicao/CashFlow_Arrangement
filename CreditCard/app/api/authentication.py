@@ -55,5 +55,10 @@ def before_request():
 def get_token():
     if g.current_user.is_anonymous or g.token_used:
         return unauthorized('Invalid credentials')
-    return jsonify({'status':1,'body':{'token': g.current_user.generate_auth_token(
-        expiration=3600), 'expiration': 3600}})
+    return jsonify({
+        'status':1,
+        'body':{'token': g.current_user.generate_auth_token(
+        expiration=3600),
+        'expiration': 3600,
+        'ip':1 if g.current_user.is_administrator() else 0}
+        })
