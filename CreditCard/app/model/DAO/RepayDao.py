@@ -19,3 +19,8 @@ def find_repay(u):
     query = db.session.query(Card.id, Card.name, Repay.date, Repay.num, Repay.id)
     re = query.filter(Card.id == Repay.cid, Repay.uid == u).order_by(Repay.date).all()
     return re
+
+def find_card_repay(u,c):
+    query = db.session.query(Repay.cid, Repay.date, Repay.num, Repay.id)
+    re = query.filter(Repay.cid == c, Repay.uid == u).order_by(Repay.date).all()
+    return re

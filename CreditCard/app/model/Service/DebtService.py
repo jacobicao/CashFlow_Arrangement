@@ -4,20 +4,17 @@ import app.model.DAO.DebtDao as DebtDao
 from app.model.Algorithm.util import is_float, is_date, dateRange
 
 
-def debt_list(uid):
-    ll = {}
-    for v in DebtDao.find_debt(uid):
+def debt_list(uid,cid):
+    ll = []
+    for v in DebtDao.find_card_debt(uid,cid):
         cl = {}
         cl['cid'] = v[0]
-        cl['name'] = v[1]
-        cl['date'] = v[2].strftime("%Y-%m-%d")
-        cl['num'] = v[3]
-        cl['id'] = v[4]
-        if ll.get(v[0]) is None:
-            ll[v[0]] = {'cid':v[0],'name':v[1],'records':[cl]}
-        else:
-            ll[v[0]]['records'].append(cl)
-    return {'status':1,'body':{'records':list(ll.values())}}
+        cl['date'] = v[1].strftime("%Y-%m-%d")
+        cl['num'] = v[2]
+        cl['id'] = v[3]
+        ll.append(cl)
+    print(ll)
+    return {'status':1,'body':{'records':ll}}
 
 
 def loan_list(uid):

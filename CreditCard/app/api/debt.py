@@ -7,7 +7,13 @@ import app.model.MyApi as Controller
 
 @api.route('/records',methods=['POST'])
 def api_GetRecordList():
-    return jsonify(Controller.debt_list(g.current_user.id))
+    id = g.current_user.id
+    b = json.loads(str(request.get_data(), encoding = "utf-8"))
+    c = b.get('cid')
+    if not c:
+        res = {'status': 2, 'msg': '参数不完整'}
+        return jsonify(res)
+    return jsonify(Controller.debt_list(id,c))
 
 
 @api.route('/loans',methods=['POST'])

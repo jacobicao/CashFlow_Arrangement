@@ -8,18 +8,15 @@ from app.model.Algorithm.util import is_float, is_date
 from app.model.Algorithm.CardPad import CardPad
 
 
-def repay_list(uid):
+def repay_list(uid,cid):
     ll = {}
-    for v in RepayDao.find_repay(uid):
-        # if v[1] == '房贷':
-        #     continue
-        m = v[2].strftime("%m月")
+    for v in RepayDao.find_card_repay(uid,cid):
+        m = v[1].strftime("%m月")
         cl = {}
         cl['cid'] = v[0]
-        cl['name'] = v[1]
-        cl['date'] = v[2].strftime("%Y-%m-%d")
-        cl['num'] = v[3]
-        cl['id'] = v[4]
+        cl['date'] = v[1].strftime("%Y-%m-%d")
+        cl['num'] = v[2]
+        cl['id'] = v[3]
         if ll.get(m) is None:
             ll[m] = {'name':m,'records':[cl]}
         else:
