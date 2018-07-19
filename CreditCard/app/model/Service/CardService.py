@@ -38,7 +38,8 @@ def card_list(uid):
         cl['avail'] = used if used else 0
         cl['used'] = 0
         ll.append(cl)
-    cl = {'ct':2,'id':0,'name':'工资卡','freedays':0}
+    cl = {'ct':2,'id':-1,'name':'工资卡','freedays':0}
+    ll.append(cl)
     return {'status':1,'body':{'cards':ll}}
 
 
