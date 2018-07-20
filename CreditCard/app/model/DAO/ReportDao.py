@@ -18,7 +18,7 @@ def find_report(u,admin=False):
         RP.userName, RP.answer, RP.ans_time)
     if not admin:
         re = re.filter(RP.uid == u)
-    return re.order_by(RP.rep_time).all()
+    return re.order_by(RP.rep_time.desc()).all()
 
 def ans_answer(rid, ans):
     report = RP.query.get(rid)

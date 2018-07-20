@@ -13,7 +13,6 @@ def debt_list(uid,cid):
         cl['num'] = v[2]
         cl['id'] = v[3]
         ll.append(cl)
-    print(ll)
     return {'status':1,'body':{'records':ll}}
 
 

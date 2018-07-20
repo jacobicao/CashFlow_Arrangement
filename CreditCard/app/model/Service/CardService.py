@@ -32,11 +32,12 @@ def card_list(uid):
         cl['name'] = v[1]
         cl['acdate'] = 0
         cl['padate'] = v[3]
-        cl['num'] = 0
-        cl['freedays'] = 0
+        num = DebtDao.find_card_debt_sum(uid,cl['id'])
+        cl['num'] = num
+        cl['freedays'] = (cal_repay_date(d, cl['padate'], cl['padate'])-d).days
         used = debtlist.get(v[0])
         cl['avail'] = used if used else 0
-        cl['used'] = 0
+        cl['used'] = cl['num'] - cl['avail']
         ll.append(cl)
     cl = {'ct':2,'id':-1,'name':'工资卡','freedays':0}
     ll.append(cl)

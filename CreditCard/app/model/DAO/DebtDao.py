@@ -27,6 +27,13 @@ def find_card_debt(u,c):
         .order_by(Debt.date)
     return re.all()
 
+def find_card_debt_sum(u,c):
+    query = db.session.query(func.sum(Debt.num))
+    re = query.filter(Debt.cid == c, Debt.uid == u).all()
+    if re == None or len(re) == 0:
+        return 0
+    return re[0][0]
+
 def find_load(u):
     query = db.session.query(Debt.cid, Card.name, Debt.date, Debt.num, Debt.id)
     re = query.filter(Card.id == Debt.cid, Debt.uid == u,
