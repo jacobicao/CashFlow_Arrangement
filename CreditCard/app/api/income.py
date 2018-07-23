@@ -33,7 +33,7 @@ def api_DelIncome():
     id = g.current_user.id
     b = json.loads(str(request.get_data(), encoding = "utf-8"))
     iid = b.get('id')
-    if not iid:
+    if iid is None:
         res = {'err': 1, 'msg': '参数不完整'}
         return jsonify(res)
     res = Controller.delete_one_income(id,iid)

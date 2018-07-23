@@ -44,8 +44,8 @@ class CreditCard:
             return False
         if self.debt >= self.limit * 0.8:
             return False
-        d1 = d.replace(day=self.statement_date)
-        d2 = datetime_offset_by_month(d.replace(day=self.statement_date),-1).date()
+        d1 = d.replace(day=self.statement_date) #本月账单日
+        d2 = datetime_offset_by_month(d.replace(day=self.statement_date),-1).date() #上月账单日
         bre1 = DayO < d - d1 < Day4
         bre2 = DayO < d - d2 < Day4
         return bre1 or bre2

@@ -34,7 +34,7 @@ class CardPad(Pad):
         income = self.get_income(t)
         if income > 0 and self.transform_debt(t, self, '工资', income, c):
             return True
-        readylist = []
+        readylist = [] # 可刷列表{(id,days,num)}
         for cc in self.pool:
             if cc.name == c.name:
                 continue
