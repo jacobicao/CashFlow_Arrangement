@@ -4,7 +4,6 @@
 需求列表：
 1. 小额贷也纳入卡包，然后考虑贷款利息
 2. 可能的话应该尽量迟还，要智能
-3. 分view层
 """
 import datetime as dt
 from .util import datetime_offset_by_month, cal_repay_date
