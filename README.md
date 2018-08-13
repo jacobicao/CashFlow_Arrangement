@@ -1,2 +1,2 @@
 # py_project
-Learning DIG DATA TECH in python recently.
+This is a calculation library for credit card repaid arrangement.
