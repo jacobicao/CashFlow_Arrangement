@@ -10,8 +10,8 @@ def report_list(uid,admin=False):
         cl['isadvice'] = v[2]
         cl['pageAdr'] = v[3]
         cl['content'] = v[4]
-        if v[5] is None:
-            cl['userName'] = 'Visitor'
+        if v[5] is None or v[5] == '':
+            cl['userName'] = '匿名'
         else:
             cl['userName'] = v[5]
         cl['answer'] = v[6]
