@@ -2,5 +2,17 @@
 *.pyc
 *.csv
 .idea
-*.db
+
+# Packages
+__pycache__
+
+# SQLite databases
 *.sqlite
+*.db
+
+# Virtual environment
+venv
+
+# Environment files
+.env
+.env-mysql
