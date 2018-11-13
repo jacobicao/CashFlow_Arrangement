@@ -68,8 +68,17 @@ def print_plan(uid,plan,a):
 def cal_debt_current(uid):
     ll = []
     pad = CardPad()
-    init_pad(pad, uid)
-    d = pad.get_total_debt_list()
+    
+    try:
+        init_pad(pad, uid)
+    except Exception as e:
+        return {'msg':'卡包初始化出错:' + str(e),'status':2}
+
+    try:
+        d = pad.get_total_debt_list()
+    except Exception as e:
+        return {'msg':'计算总债务出错:' + str(e),'status':2}
+    
     if not len(d):
         return {'status':1,'body':{'debts':ll}}
     for x in d:

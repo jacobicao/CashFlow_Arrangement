@@ -31,6 +31,9 @@ def add_one_repay(uid,cid,num,t):
         return {'msg':'数量错误','status':2}
     if not is_date(t):
         return {'msg':'日期错误','status':2}
+    ll = [v[0] for v in CardDao.find_card(uid)]
+    if cid not in ll:
+        return {'msg':'id不存在','status':2}
     try:
         RepayDao.add_repay(uid, cid, dt.datetime.strptime(t,'%Y-%m-%d'), num)
     except Exception as e:
